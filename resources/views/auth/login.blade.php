@@ -21,14 +21,13 @@
 
                 <div class="mt-6 text-center">
                     @if (Route::has('password.request'))
-                    <Link class="underline text-sm text-base-content hover:text-neutral"
-                        href="{{ route('password.request') }}">
+                    <Link class="underline text-sm text-base-content" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                     </Link>
                     @endif
                     <br>
                     @if (Route::has('register'))
-                    <Link class="underline text-sm text-base-content hover:text-neutral" href="{{ route('register') }}">
+                    <Link class="underline text-sm text-base-content" href="{{ route('register') }}">
                     {{ __('Dont have an account? Sign up') }}
                     </Link>
                     @endif

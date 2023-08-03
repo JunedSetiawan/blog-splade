@@ -1,6 +1,6 @@
 <div class="font-sans text-gray-900 antialiased bg-base-200">
     <div class="flex flex-col justify-between min-h-screen">
-        <main class="flex items-center justify-center md:min-w-[90vh] min-h-[90vh] mx-auto">
+        <main class="flex items-center justify-center md:min-w-[170vh] min-h-[90vh] mx-auto">
             <div
                 class="grid grid-cols-1 md:grid-cols-2 gap-28 bg-base-100 w-full rounded shadow-md border border-base-100 p-10">
                 <div class="hidden md:flex justify-center items-center h-full w-full">

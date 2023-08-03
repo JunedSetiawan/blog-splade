@@ -1,17 +1,19 @@
 <x-auth-card>
     <div class="">
         <h2 class="text-2xl font-bold tracking-wide">Sign Up</h2>
-        <hr class="border border-secondary my-4">
+        <hr class="border border-secondary my-2">
         <p class="text-dark">Hello, please sign up to continue.</p>
 
-        <div class="mt-6">
+        <div class="mt-4">
             <!-- Session Status -->
-            <x-auth-session-status class="mb-4" />
+            <x-auth-session-status class="mb-3" />
             <x-splade-form action="{{ route('register') }}" class="space-y-4">
                 <x-splade-input id="name" type="text" name="name" :label="__('Name')" required autofocus />
                 <x-splade-input id="email" type="email" name="email" :label="__('Email')" required />
-                <x-splade-input id="password" type="password" name="password" :label="__('Password')" required autocomplete="new-password" />
-                <x-splade-input id="password_confirmation" type="password" name="password_confirmation" :label="__('Confirm Password')" required />
+                <x-splade-input id="password" type="password" name="password" :label="__('Password')" required
+                    autocomplete="new-password" />
+                <x-splade-input id="password_confirmation" type="password" name="password_confirmation"
+                    :label="__('Confirm Password')" required />
 
                 <x-splade-submit class="w-full" :label="__('Sign Up')" />
 
