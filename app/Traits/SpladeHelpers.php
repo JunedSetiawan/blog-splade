@@ -10,9 +10,9 @@ trait SpladeHelpers
 {
     public function spladeTitle(string $title)
     {
-        $appMain = Str::title(config('app.name'));
+        // $appMain = Str::title(config('app.name'));
 
-        SEO::title("$title | $appMain");
+        SEO::title($title);
     }
 
     public function spladeDescription(string $description)
