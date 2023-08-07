@@ -1,8 +1,9 @@
-<x-splade-toggle data="isOpen">
-    <section class="bg-base-100 border-t-4 border-secondary">
+<x-splade-toggle data="isOpen,isProfileOpen">
+    <section class="bg-base-100">
+        <div class="absolute inset-x-0 top-0 h-2 bg-gradient-to-l from-pink-500 via-red-500 to-yellow-500"></div>
         <nav class="container p-5 mx-auto lg:flex lg:justify-between lg:items-center">
             <div class="flex items-center justify-between">
-                <a href="#">
+                <a href="#" class="text-base-content font-bold text-xl">
                     Blog Post Splade
                 </a>
 
@@ -39,10 +40,36 @@
                 </div>
                 @if (Route::has('login'))
                 @auth
-                <Link href="{{ url('/dashboard') }}"
-                    class="lg:flex block mt-4 text-sm text-center  btn btn-outline  capitalize bg-base-100 rounded-lg lg:mt-0 lg:w-auto">
-                Dashboard
-                </Link>
+                <div class="tooltip tooltip-bottom" data-tip="Profile">
+                    <div class="dropdown lg:dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle avatar mr-2"
+                            @click.prevent="toggle('isProfileOpen')">
+                            <div class="w-10 rounded-full shadow-md">
+                                <img
+                                    src="https://api.dicebear.com/6.x/identicon/svg?scale=75&seed={{ Auth::user()->name }}" />
+                            </div>
+                        </label>
+                        <ul v-show="isProfileOpen" tabindex="0"
+                            class="z-10 menu menu-sm dropdown-content p-2 shadow bg-base-100 rounded-box w-52 space-y-3">
+                            <span class="badge">{{ Auth::user()->name }}</span>
+                            <div class="badge badge-primary badge-outline">{{ Auth::user()->email }}</div>
+                            <li class="my-4">
+                                <Link href="{{ url('/dashboard') }}"
+                                    class="text-base-content justify-between font-medium">
+                                Dashboard
+                                </Link>
+                            </li>
+                            <li class="my-4">
+                                <Link href="{{ route('profile.edit') }}" class="text-base-content justify-between">
+                                Profile
+                                </Link>
+                            </li>
+                            <li class="my-4">
+                                <Link href="{{ route('logout') }}" method="POST" class="text-base-content">Logout</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 @else
                 <Link
                     class="lg:flex block px-5 py-2 mt-4 text-sm text-center btn btn-outline  capitalize bg-base-100 rounded-lg lg:mt-0 lg:w-auto"
@@ -51,6 +78,7 @@
                 </Link>
                 @endauth
                 @endif
+                <theme-toggle class="ml-3 text-base-content"></theme-toggle>
             </div>
         </nav>
         {{ $hero ?? '' }}
