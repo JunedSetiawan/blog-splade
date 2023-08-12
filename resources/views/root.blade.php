@@ -11,6 +11,9 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
+    <!-- Icon -->
+    <link rel="shortcut icon" href="{{ asset('icon/icon_abs.jpg') }}" type="image/x-icon">
+
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
     @spladeHead
