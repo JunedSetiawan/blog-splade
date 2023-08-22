@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\ImageUpload;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,7 @@ Route::middleware('splade')->group(function () {
 
     // Registers routes to support async File Uploads with Filepond...
     Route::spladeUploads();
-
+    require __DIR__ . '/auth.php';
     Route::get('/', [HomeController::class, 'index'])->name('main');
 
     Route::middleware('auth')->group(function () {
@@ -41,7 +42,5 @@ Route::middleware('splade')->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
-
-    // require __DIR__ . '/documentation.php';
-    require __DIR__ . '/auth.php';
+    Route::get('{filename}', [ImageUpload::class, 'getImageFile'])->name('getImage');
 });

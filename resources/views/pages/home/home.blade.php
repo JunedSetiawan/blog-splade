@@ -20,7 +20,9 @@
         </x-slot>
     </x-home-navbar>
     <div class="container px-6 py-3 mx-auto">
-        <h1 class="mb-4 font-semibold text-2xl text-base-content">Recent blog posts</h1>
+        <h1 class="mb-4 font-semibold text-2xl text-base-content flex justify-between">Recent blog posts <span
+                class="underline font-medium text-lg text-primary-focus"><a href="#">Load
+                    More</a></span></h1>
         <div class="lg:flex lg:-mx-6">
             <div class="lg:w-1/2 lg:px-6">
 
@@ -122,11 +124,14 @@
             </div>
         </div>
 
-        <h1 class="mt-14 mb-5 font-semibold text-2xl text-base-content">All blog posts</h1>
+        <h1 class="mt-10 mb-3 font-semibold text-2xl text-base-content flex justify-between">All blog posts <span
+                class="underline font-medium text-lg text-primary-focus"><a href="#">Load
+                    More</a></span></h1>
         <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
                 <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
-                    <img src="{{ asset('default.jpg') }}" class="object-cover w-full h-48 sm:h-56" alt="" />
+                    <img src="{{ route('getImage',['filename' => 'default.jpg']) }}"
+                        class="object-cover w-full h-48 sm:h-56" alt="" />
                     <div class="pt-5">
                         <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
                             <span class="text-base-content">User — 28 Dec 2020</span>

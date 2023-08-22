@@ -54,7 +54,7 @@
                             <span class="badge">{{ Auth::user()->name }}</span>
                             <div class="badge badge-primary badge-outline">{{ Auth::user()->email }}</div>
                             <li class="my-4">
-                                <Link href="{{ url('/dashboard') }}"
+                                <Link href="{{ route('dashboard') }}"
                                     class="text-base-content justify-between font-medium">
                                 Dashboard
                                 </Link>

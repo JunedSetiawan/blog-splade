@@ -11,21 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
+            $table->uuid('post_id');
             $table->uuid('user_id');
-            $table->uuid('category_id');
-            $table->string('title');
-            $table->text('body');
-            $table->unsignedBigInteger('likes_count')->default(0);
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->string('image')->nullable();
+            $table->string('description');
             $table->timestamps();
 
-            $table->index(['title']);
-
+            $table->foreign('post_id')->references('id')->on('posts');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('reports');
     }
 };
