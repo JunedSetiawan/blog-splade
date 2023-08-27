@@ -10,6 +10,8 @@ class Post extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $fillable = ['user_id', 'category_id', 'title', 'body', 'status'];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

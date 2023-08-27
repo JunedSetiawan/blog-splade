@@ -43,7 +43,9 @@ class RoleAndPermissionSeeder extends Seeder
             'delete-posts'
         ]);
 
-        $user = User::first();
-        $user->assignRole($adminRole);
+        $admin = User::first();
+        $admin->assignRole($adminRole);
+
+        // User::factory(10)->create()->assignRole($writerRole);
     }
 }

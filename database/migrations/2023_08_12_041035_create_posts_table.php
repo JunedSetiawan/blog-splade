@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('category_id');
             $table->string('title');
             $table->text('body');
-            $table->unsignedBigInteger('likes_count')->default(0);
+            $table->unsignedBigInteger('likes_count')->nullable()->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('image')->nullable();
             $table->timestamps();

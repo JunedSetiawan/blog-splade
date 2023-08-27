@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,5 +20,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleAndPermissionSeeder::class,
         ]);
+        Post::factory(9)->create();
     }
 }
