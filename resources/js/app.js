@@ -1,7 +1,9 @@
 import "./bootstrap";
 import "../css/app.css";
 import "@protonemedia/laravel-splade/dist/style.css";
-import "htmx.org";
+import 'htmx.org';
+import 'htmx.org/dist/ext/preload';
+import 'htmx.org/dist/ext/debug';
 
 import ThemeToggle from "./components/ThemeToggle.vue";
 

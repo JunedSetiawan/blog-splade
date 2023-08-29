@@ -35,9 +35,9 @@
                         $post->created_at->diffForHumans() }}</span>
                     <p class="mt-3 text-lg font-medium leading-6">
                         <a href="./blog-post.html" class="text-lg text-base-content lg:text-xl font-semibold">{{
-                            $post->title }}}</a>
+                            $post->title }}</a>
                     </p>
-                    <p class="mt-2 text-md text-base-content">{!! Str::limit(strip_tags($post->body), 90) !!}</p>
+                    <p class="mt-2 text-md text-base-content">{!! $post->shortBody() !!}</p>
                     <div class="mt-2 space-x-2">
                         <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
                             Technology
@@ -60,29 +60,26 @@
                         class="object-cover w-full h-48 sm:h-56" alt="" />
                     <div class="pt-5">
                         <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
-                            <span class="text-base-content">User — 28 Dec 2020</span>
+                            <span class="text-base-content">{{ $post->user->name .' - ' .
+                                $post->created_at->diffForHumans() }}</span>
                         </p>
                         <a href="/"
-                            class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors duration-200">Lorem
-                            ipsum dolor sit amet consectetur adipisicing elit. Quia animi corporis dicta
-                            aspernatur.</a>
+                            class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors duration-200">{{$post->title}}</a>
                         <p class="mb-2 text-base-content">
-                            Sed ut perspiciatis unde omnis iste natus error sit sed quia consequuntur magni
-                            voluptatem
-                            doloremque.
+                            {{$post->shortBody()}}
                         </p>
                         <div class="mt-4 space-x-2">
                             <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                                Technology
+                                {{ $post->category->name }}
                             </div>
                             <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                         </div>
                     </div>
                 </div>
                 @endforeach
-                {!! $posts->links() !!}
             </div>
         </div>
+        {{ $posts->links() }}
     </div>
     <div class="mt-14 inset-x-0 top-0 h-2 bg-gradient-to-l from-pink-500 via-red-500 to-yellow-500"></div>
     <x-footer>

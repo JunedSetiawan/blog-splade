@@ -34,6 +34,7 @@ Route::middleware('splade')->group(function () {
     require __DIR__ . '/auth.php';
     Route::get('/', [HomeController::class, 'index'])->name('main');
     Route::get('/post-category', [PostCategoryController::class, 'index'])->name('post.category');
+    Route::get('/load-more-posts', [PostCategoryController::class, 'loadMore']);
 
     Route::middleware('auth')->group(function () {
         Route::get('testing-table', [UserController::class, 'index'])->name('test.table');
