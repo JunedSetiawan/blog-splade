@@ -14,6 +14,11 @@
     <!-- Icon -->
     <link rel="shortcut icon" href="{{ asset('icon/icon_abs.jpg') }}" type="image/x-icon">
 
+    {{-- Htmx --}}
+    <script src="https://unpkg.com/htmx.org@1.9.5"
+        integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" crossorigin="anonymous"
+        defer></script>
+
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
     @spladeHead

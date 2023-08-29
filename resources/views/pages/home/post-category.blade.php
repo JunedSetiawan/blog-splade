@@ -29,15 +29,17 @@
     <div class="container px-6 py-3 mx-auto">
         <div
             class="flex overflow-x-scroll scrolle overflow-y-hidden border-b border-gray-200 whitespace-nowrap dark:border-gray-700 my-4">
-            <button
+            <Link href="{{ route('post.category') }}"
                 class="inline-flex items-center h-10 px-4 -mb-px text-sm text-center text-secondary-focus bg-transparent border-b-2 border-secondary-focus sm:text-base font-bold whitespace-normal focus:outline-none">
-                All
-            </button>
+            All
+            </Link>
             @foreach($categories as $key => $category)
-            <button
-                class="inline-flex items-center h-10 px-4 -mb-px text-sm text-center whitespace-nowrap text-gray-700 bg-transparent border-b-2 border-transparent sm:text-base dark:text-white whitespace-normal cursor-base focus:outline-none hover:border-gray-400">
-                {{ $category->name }}
-            </button>
+            <x-tab-link :href="route('category.select',$category->slug)"
+                :aktif="request()->routeIs('category.select',$category->slug)" class="inline-flex items-center h-10 px-4 -mb-px text-sm text-center whitespace-nowrap text-gray-700 bg-transparent
+                border-b-2 border-transparent sm:text-base dark:text-white whitespace-normal cursor-base focus:outline-none
+                hover:border-gray-400">
+                {{$category->name }}
+            </x-tab-link>
             @endforeach
         </div>
         <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">

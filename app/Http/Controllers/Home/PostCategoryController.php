@@ -22,14 +22,26 @@ class PostCategoryController extends Controller
         ]);
     }
 
+    public function categorySelect(Request $request)
+    {
+        $posts = Post::with(['category', 'user'])->whereHas('category', function ($query) use ($request) {
+            $query->where('slug', $request->slug);
+        })->latest()->paginate(6);
+        $categories = Category::get();
+
+        return view('pages.home.post-category', [
+            'categories' => $categories,
+            'posts' => $posts,
+        ]);
+    }
+
     public function loadMore(Request $request)
     {
-        $categories = Category::get();
         $page = $request->input('page', 2);
         $posts = Post::paginate(6, ['*'], 'page', $page);
-        return view('pages.home.post-category', [
+        return view('pages.home.post-load', [
             'posts' => $posts,
-            'categories' => $categories,
+
         ]);
     }
 }

@@ -1,13 +1,10 @@
-import inject from "@rollup/plugin-inject";
+// import inject from "@rollup/plugin-inject";
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 
 export default defineConfig({
     plugins: [
-        inject({
-            htmx:'htmx.org'
-        }),
         laravel({
             input: "resources/js/app.js",
             ssr: "resources/js/ssr.js",
