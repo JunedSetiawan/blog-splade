@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleAndPermissionSeeder::class,
         ]);
-        Post::factory(9)->create();
+        Post::factory(20)->create();
     }
 }

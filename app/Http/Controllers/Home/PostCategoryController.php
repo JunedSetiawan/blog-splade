@@ -14,7 +14,7 @@ class PostCategoryController extends Controller
         $this->spladeTitle('Post Categories');
 
         $categories = Category::get();
-        $posts = Post::with(['category', 'user'])->latest()->paginate(6);
+        $posts = Post::with(['category', 'user'])->latest()->paginate(10);
 
         return view('pages.home.post-category', [
             'categories' => $categories,
@@ -26,7 +26,7 @@ class PostCategoryController extends Controller
     {
         $posts = Post::with(['category', 'user'])->whereHas('category', function ($query) use ($request) {
             $query->where('slug', $request->slug);
-        })->latest()->paginate(6);
+        })->latest()->paginate(10);
         $categories = Category::get();
 
         return view('pages.home.post-category', [
@@ -37,11 +37,20 @@ class PostCategoryController extends Controller
 
     public function loadMore(Request $request)
     {
-        $page = $request->input('page', 2);
-        $posts = Post::paginate(6, ['*'], 'page', $page);
-        return view('pages.home.post-load', [
-            'posts' => $posts,
+        $perPage = 10; // Jumlah item yang ingin Anda muat setiap kali
+        $page = $request->input('page', 1); // Ambil nomor halaman dari permintaan, default 1
 
+        $posts = Post::with('category', 'user')->orderBy('created_at')->paginate($perPage, ['*'], 'page', $page);
+
+        $postsWithImageUrl = $posts->map(function ($post) {
+            $post->image = route('getImage', ['filename' => $post->image ?? 'default.jpg']); // Menambahkan URL gambar ke setiap objek postingan
+            return $post;
+        });
+
+        return response()->json([
+            'data' => $postsWithImageUrl, // Ambil item data dari objek Pagination
+            'current_page' => $posts->currentPage(),
+            'last_page' => $posts->lastPage(),
         ]);
     }
 }

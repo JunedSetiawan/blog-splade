@@ -29,54 +29,17 @@
     <div class="container px-6 py-3 mx-auto">
         <div
             class="flex overflow-x-scroll scrolle overflow-y-hidden border-b border-gray-200 whitespace-nowrap dark:border-gray-700 my-4">
-            <Link href="{{ route('post.category') }}"
-                class="inline-flex items-center h-10 px-4 -mb-px text-sm text-center text-secondary-focus bg-transparent border-b-2 border-secondary-focus sm:text-base font-bold whitespace-normal focus:outline-none">
-            All
-            </Link>
+            <x-tab-link :href="route('post.category')" :aktif="request()->routeIs('post.category')">
+                All
+            </x-tab-link>
             @foreach($categories as $key => $category)
             <x-tab-link :href="route('category.select',$category->slug)"
-                :aktif="request()->routeIs('category.select',$category->slug)" class="inline-flex items-center h-10 px-4 -mb-px text-sm text-center whitespace-nowrap text-gray-700 bg-transparent
-                border-b-2 border-transparent sm:text-base dark:text-white whitespace-normal cursor-base focus:outline-none
-                hover:border-gray-400">
+                :aktif="$category->slug === request()->route('slug')">
                 {{$category->name }}
             </x-tab-link>
             @endforeach
         </div>
-        <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
-            <div id="replaceMe" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
-                @foreach($posts as $post)
-                <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
-                    <img src="{{ route('getImage',['filename' => 'default.jpg']) }}"
-                        class="object-cover w-full h-48 sm:h-56" alt="" />
-                    <div class="pt-5">
-                        <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
-                            <span class="text-base-content">{{ $post->user->name . ' - ' .
-                                $post->created_at->diffForHumans() }}</span>
-                        </p>
-                        <a href="/"
-                            class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors duration-200">{{
-                            $post->title }}</a>
-                        <p class="mb-2 text-base-content">
-                            {!! $post->shortBody() !!}
-                        </p>
-                        <div class="mt-4 space-x-2">
-                            <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                                {{ $post->category->name }}
-                            </div>
-                            <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-        <div class="flex justify-center mt-3">
-            <button class='btn btn-neutral text-center' hx-get="/load-more-posts?page={{ $posts->currentPage() + 1 }}"
-                hx-target="#replaceMe" hx-swap="outerHTML" hx-indicator="#indicator">
-                Load More
-                <span id="indicator" class="loading loading-spinner htmx-indicator"></span>
-            </button>
-        </div>
+        <post-load />
     </div>
     <div class="mt-14 inset-x-0 top-0 h-2 bg-gradient-to-l from-pink-500 via-red-500 to-yellow-500"></div>
     <x-footer>
