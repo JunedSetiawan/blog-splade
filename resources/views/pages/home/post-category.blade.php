@@ -33,7 +33,7 @@
                 All
             </x-tab-link>
             @foreach($categories as $key => $category)
-            <x-tab-link :href="route('category.select',$category->slug)"
+            <x-tab-link :href="route('category.select', ['slug' => $category->slug])"
                 :aktif="$category->slug === request()->route('slug')">
                 {{$category->name }}
             </x-tab-link>

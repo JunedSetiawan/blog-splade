@@ -35,7 +35,7 @@ class PostCategoryController extends Controller
         ]);
     }
 
-    public function loadMore(Request $request)
+    public function loadMore(Request $request, $slug = '')
     {
         $perPage = 10; // Jumlah item yang ingin Anda muat setiap kali
         $page = $request->input('page', 1); // Ambil nomor halaman dari permintaan, default 1
@@ -49,6 +49,29 @@ class PostCategoryController extends Controller
 
         return response()->json([
             'data' => $postsWithImageUrl, // Ambil item data dari objek Pagination
+            'current_page' => $posts->currentPage(),
+            'last_page' => $posts->lastPage(),
+        ]);
+    }
+
+    public function loadMoreCategory(Request $request, $slug)
+    {
+        $perPage = 10;
+        $page = $request->input('page', 1);
+
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $posts = Post::with('category', 'user')
+            ->where('category_id', $category->id)
+            ->orderBy('created_at')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        $postsWithImageUrl = $posts->map(function ($post) {
+            $post->image = route('getImage', ['filename' => $post->image ?? 'default.jpg']);
+            return $post;
+        });
+
+        return response()->json([
+            'data' => $postsWithImageUrl,
             'current_page' => $posts->currentPage(),
             'last_page' => $posts->lastPage(),
         ]);

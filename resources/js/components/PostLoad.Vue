@@ -47,7 +47,7 @@
         <infinite-loading
             @infinite="load"
             :infinite-disabled="!hasMorePages"
-            class="flex justify-center mt-3"
+            class="flex justify-center mt-4 text-xl font-medium"
         />
     </div>
 </template>
@@ -57,12 +57,27 @@ import { ref } from "vue";
 let posts = ref([]);
 const hasMorePages = ref(true);
 let page = 1;
+
 const load = async ($state) => {
     try {
-        const response = await fetch("/load-more-posts?page=" + page);
+        let apiUrl = "/load-more-posts";
+
+        const urlParts = window.location.pathname.split("/");
+        const currentSlug = urlParts.length > 2 ? urlParts[2] : null;
+
+        const pageParam = `?page=${page}`;
+
+        if (currentSlug) {
+            apiUrl = `/post-category/${currentSlug}/load-more${pageParam}`;
+        } else {
+            apiUrl += pageParam;
+        }
+
+        const response = await fetch(apiUrl);
         const json = await response.json();
+
         if (json.data.length === 0) {
-            hasMorePages.value = false; // Tidak ada data lagi
+            hasMorePages.value = false;
             $state.complete();
         } else {
             posts.value.push(...json.data);
