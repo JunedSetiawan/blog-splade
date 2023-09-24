@@ -16,9 +16,10 @@
                         <p
                             class="mb-3 text-xs font-semibold tracking-wide uppercase"
                         >
-                            <span class="text-base-content">{{
-                                post.user.name
-                            }}</span>
+                            <span class="text-base-content"
+                                >{{ post.user.name }} -
+                                {{ diffForHumans(post.created_at) }}
+                            </span>
                         </p>
                         <a
                             href="/"
@@ -54,23 +55,22 @@
 <script setup>
 import { ref } from "vue";
 
+const props = defineProps({
+    categorySlug: String,
+});
+
 let posts = ref([]);
 const hasMorePages = ref(true);
 let page = 1;
 
+const categorySlug = props.categorySlug;
+
 const load = async ($state) => {
     try {
-        let apiUrl = "/load-more-posts";
+        let apiUrl = `/load-more-posts?page=${page}`;
 
-        const urlParts = window.location.pathname.split("/");
-        const currentSlug = urlParts.length > 2 ? urlParts[2] : null;
-
-        const pageParam = `?page=${page}`;
-
-        if (currentSlug) {
-            apiUrl = `/post-category/${currentSlug}/load-more${pageParam}`;
-        } else {
-            apiUrl += pageParam;
+        if (categorySlug) {
+            apiUrl = `/post-category/${categorySlug}/load-more?page=${page}`;
         }
 
         const response = await fetch(apiUrl);
@@ -99,5 +99,25 @@ const limitPostBody = (body) => {
 
     // Batasi panjang teks menjadi 90 karakter
     return bodyWithLineBreaks.substring(0, 90);
+};
+
+const diffForHumans = (createdAt) => {
+    const currentTime = new Date();
+    const postTime = new Date(createdAt);
+    const timeDifference = currentTime - postTime;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+        return `${days} days ago`;
+    } else if (hours > 0) {
+        return `${hours} hours ago`;
+    } else if (minutes > 0) {
+        return `${minutes} minutes ago`;
+    } else {
+        return `${seconds} seconds ago`;
+    }
 };
 </script>

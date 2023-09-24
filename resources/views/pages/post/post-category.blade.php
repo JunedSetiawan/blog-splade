@@ -39,7 +39,7 @@
             </x-tab-link>
             @endforeach
         </div>
-        <post-load />
+        <post-load :category-slug="{{ json_encode(request()->route('slug')) }}" />
     </div>
     <div class="mt-14 inset-x-0 top-0 h-2 bg-gradient-to-l from-pink-500 via-red-500 to-yellow-500"></div>
     <x-footer>

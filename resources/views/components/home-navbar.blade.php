@@ -82,7 +82,6 @@
                 </Link>
                 @endauth
                 @endif
-                <theme-toggle class="ml-3 text-base-content"></theme-toggle>
             </div>
         </nav>
         {{ $hero ?? '' }}

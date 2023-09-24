@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\PostCategoryController;
 use App\Http\Controllers\ImageUpload;
+use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,11 +34,14 @@ Route::middleware('splade')->group(function () {
     Route::spladeUploads();
     require __DIR__ . '/auth.php';
     Route::get('/', [HomeController::class, 'index'])->name('main');
+
     Route::get('/post-category', [PostCategoryController::class, 'index'])->name('post.category');
     Route::get('/load-more-posts', [PostCategoryController::class, 'loadMore'])->name('loadMore');
     Route::get('/post-category/{slug}', [PostCategoryController::class, 'categorySelect'])->name('category.select');
     Route::get('/post-category/{slug}/load-more', [PostCategoryController::class, 'loadMoreCategory'])
         ->name('category.load-more');
+
+    Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 
     Route::middleware('auth')->group(function () {
         Route::get('testing-table', [UserController::class, 'index'])->name('test.table');

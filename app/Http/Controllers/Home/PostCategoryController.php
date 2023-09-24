@@ -14,11 +14,9 @@ class PostCategoryController extends Controller
         $this->spladeTitle('Post Categories');
 
         $categories = Category::get();
-        $posts = Post::with(['category', 'user'])->latest()->paginate(10);
 
-        return view('pages.home.post-category', [
+        return view('pages.post.post-category', [
             'categories' => $categories,
-            'posts' => $posts,
         ]);
     }
 
@@ -29,7 +27,7 @@ class PostCategoryController extends Controller
         })->latest()->paginate(10);
         $categories = Category::get();
 
-        return view('pages.home.post-category', [
+        return view('pages.post.post-category', [
             'categories' => $categories,
             'posts' => $posts,
         ]);
