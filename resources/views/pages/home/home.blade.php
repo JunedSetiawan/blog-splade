@@ -55,9 +55,8 @@
         <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
                 @foreach($posts as $key => $post)
-
                 <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
-                    <img src="{{ route('getImage',['filename' => 'default.jpg']) }}"
+                    <img src="{{ route('getImage',['filename' => $post->image ?? 'default.jpg']) }}"
                         class="object-cover w-full h-48 sm:h-56" alt="" />
                     <div class="pt-5">
                         <p class="mb-3 text-xs font-semibold tracking-wide uppercase">

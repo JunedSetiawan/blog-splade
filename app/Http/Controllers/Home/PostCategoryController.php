@@ -40,18 +40,20 @@ class PostCategoryController extends Controller
 
         $posts = Post::with('category', 'user')->orderBy('created_at')->paginate($perPage, ['*'], 'page', $page);
 
-        $postsWithImageUrl = $posts->map(function ($post) {
-            $post->image = route('getImage', ['filename' => $post->image ?? 'default.jpg']); // Menambahkan URL gambar ke setiap objek postingan
-            return $post;
-        });
-
         return response()->json([
-            'data' => $postsWithImageUrl, // Ambil item data dari objek Pagination
+            'data' => $posts, // Ambil item data dari objek Pagination
             'current_page' => $posts->currentPage(),
             'last_page' => $posts->lastPage(),
         ]);
     }
 
+    /**
+     * Load more posts for a given category.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $slug
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function loadMoreCategory(Request $request, $slug)
     {
         $perPage = 10;
@@ -63,13 +65,8 @@ class PostCategoryController extends Controller
             ->orderBy('created_at')
             ->paginate($perPage, ['*'], 'page', $page);
 
-        $postsWithImageUrl = $posts->map(function ($post) {
-            $post->image = route('getImage', ['filename' => $post->image ?? 'default.jpg']);
-            return $post;
-        });
-
         return response()->json([
-            'data' => $postsWithImageUrl,
+            'data' => $posts,
             'current_page' => $posts->currentPage(),
             'last_page' => $posts->lastPage(),
         ]);

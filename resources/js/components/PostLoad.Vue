@@ -8,7 +8,7 @@
                     class="overflow-hidden transition-shadow duration-300 rounded shadow-sm"
                 >
                     <img
-                        :src="post.image"
+                        :src="post.image ? `${post.image}` : 'default.jpg'"
                         class="object-cover w-full h-48 sm:h-56"
                         alt=""
                     />
@@ -16,9 +16,7 @@
                         <p
                             class="mb-3 text-xs font-semibold tracking-wide uppercase"
                         >
-                            <span class="text-base-content"
-                                >{{ post.user.name }} -
-                                {{ diffForHumans(post.created_at) }}
+                            <span class="text-base-content">{{ post.user.name }} - {{ diffForHumans(post.created_at) }}
                             </span>
                         </p>
                         <a
@@ -76,11 +74,11 @@ const load = async ($state) => {
         const response = await fetch(apiUrl);
         const json = await response.json();
 
-        if (json.data.length === 0) {
+        if (json.data.data.length === 0) {
             hasMorePages.value = false;
             $state.complete();
         } else {
-            posts.value.push(...json.data);
+            posts.value.push(...json.data.data);
             $state.loaded();
         }
         page++;
