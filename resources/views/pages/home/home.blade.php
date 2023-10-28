@@ -24,28 +24,30 @@
                 class="underline font-medium text-lg text-primary-focus"><a href="#">Load
                     More</a></span></h1>
         <div class="lg:grid grid-cols-2 lg:gap-4 gap-3 lg:space-y-1 space-y-5">
-            @foreach($recent_posts as $key => $post)
-            <div class="sm:flex lg:items-end group">
-                <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
-                    <img class="w-full rounded-md h-56 md:h-60 lg:h-48 lg:w-40 object-cover object-center"
-                        src="{{ route('getImage',['filename' => $post->image ?? 'default.jpg']) }}" alt="default image">
-                </div>
-                <div>
-                    <span class="text-sm text-base-content font-medium">{{ $post->user->name . ' - ' .
-                        $post->created_at->diffForHumans() }}</span>
-                    <p class="mt-3 text-lg font-medium leading-6">
-                        <a href="./blog-post.html" class="text-lg text-base-content lg:text-xl font-semibold">{{
-                            $post->title }}</a>
-                    </p>
-                    <p class="mt-2 text-md text-base-content">{!! $post->shortBody() !!}</p>
-                    <div class="mt-2 space-x-2">
-                        <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                            Technology
+            @foreach ($recent_posts as $key => $post)
+                <div class="sm:flex lg:items-end group">
+                    <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
+                        <img class="w-full rounded-md h-56 md:h-60 lg:h-48 lg:w-40 object-cover object-center"
+                            src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
+                            alt="default image">
+                    </div>
+                    <div>
+                        <span
+                            class="text-sm text-base-content font-medium">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
+                        <Link href="{{ route('post.show', $post->id) }}">
+                        <p class="mt-3 text-lg font-medium leading-6">
+                        <h2 class="text-lg text-base-content lg:text-xl font-semibold">{{ $post->title }}</h2>
+                        </p>
+                        <p class="mt-2 text-md text-base-content">{!! $post->shortBody() !!}</p>
+                        </Link>
+                        <div class="mt-2 space-x-2">
+                            <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
+                                Technology
+                            </div>
+                            <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                         </div>
-                        <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
 
@@ -54,31 +56,32 @@
                     More</a></span></h1>
         <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
-                @foreach($posts as $key => $post)
-                <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
-                    <img src="{{ route('getImage',['filename' => $post->image ?? 'default.jpg']) }}"
-                        class="object-cover w-full h-48 sm:h-56" alt="" />
-                    <div class="pt-5">
-                        <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
-                            <span class="text-base-content">{{ $post->user->name .' - ' .
-                                $post->created_at->diffForHumans() }}</span>
-                        </p>
-                        <Link href="{{ route('post.show',$post->id) }}">
-                        <h2 class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors
-                        duration-200">{{$post->title}}</h2>
-                        <p class="mb-2 text-base-content">
-                            {{$post->shortBody()}}
-                        </p>
-                        </Link>
-                        <div class="mt-4 space-x-2">
-                            <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                                {{ $post->category->name }}
+                @foreach ($posts as $key => $post)
+                    <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
+                        <img src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
+                            class="object-cover w-full h-48 sm:h-56" alt="" />
+                        <div class="pt-5">
+                            <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
+                                <span
+                                    class="text-base-content">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
+                            </p>
+                            <Link href="{{ route('post.show', $post->id) }}">
+                            <h2
+                                class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors
+                        duration-200">
+                                {{ $post->title }}</h2>
+                            <p class="mb-2 text-base-content">
+                                {{ $post->shortBody() }}
+                            </p>
+                            </Link>
+                            <div class="mt-4 space-x-2">
+                                <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
+                                    {{ $post->category->name }}
+                                </div>
+                                <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                             </div>
-                            <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                         </div>
                     </div>
-                </div>
-
                 @endforeach
             </div>
         </div>

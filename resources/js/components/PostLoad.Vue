@@ -19,14 +19,15 @@
                             <span class="text-base-content">{{ post.user.name }} - {{ diffForHumans(post.created_at) }}
                             </span>
                         </p>
-                        <a
-                            href="/"
-                            class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors duration-200"
-                            >{{ post.title }}</a
-                        >
-                        <p class="mb-2 text-base-content">
-                            {{ limitPostBody(post.body) }}
-                        </p>
+                         <Link :href="`/post/${post.id}`">
+                            <h2
+                                class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors duration-200"
+                                >{{ post.title }}</h2
+                            >
+                            <p class="mb-2 text-base-content">
+                                {{ limitPostBody(post.body) }}
+                            </p>
+                        </Link>
                         <div class="mt-4 space-x-2">
                             <div
                                 class="badge badge-outline border-2 border-secondary-focus text-base-content"
