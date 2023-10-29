@@ -21,7 +21,9 @@ class PostFactory extends Factory
                 return \App\Models\User::factory()->create()->id;
             },
             'category_id' => function () {
-                return \App\Models\Category::factory()->create()->id;
+                return \App\Models\Category::all()->random()->id;
+
+                // return \App\Models\Category::random->create()->id;
             },
             'title' => fake()->sentence(1),
             'body' =>  fake()->paragraph(),

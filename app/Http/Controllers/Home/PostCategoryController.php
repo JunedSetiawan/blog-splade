@@ -33,7 +33,7 @@ class PostCategoryController extends Controller
         ]);
     }
 
-    public function loadMore(Request $request, $slug = '')
+    public function loadMore(Request $request)
     {
         $perPage = 10; // Jumlah item yang ingin Anda muat setiap kali
         $page = $request->input('page', 1); // Ambil nomor halaman dari permintaan, default 1

@@ -42,7 +42,7 @@
                         </Link>
                         <div class="mt-2 space-x-2">
                             <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                                Technology
+                                {{ $post->category->name }}
                             </div>
                             <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                         </div>

@@ -25,6 +25,11 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'edit-posts']);
         Permission::create(['name' => 'delete-posts']);
 
+        //Make permission for report
+        Permission::create(['name' => 'view-reports']);
+        Permission::create(['name' => 'create-reports']);
+
+        //Make Role
         $adminRole = Role::create(['name' => 'admin']);
         $writerRole = Role::create(['name' => 'writer']);
 
@@ -43,8 +48,11 @@ class RoleAndPermissionSeeder extends Seeder
             'delete-posts'
         ]);
 
-        $admin = User::first();
-        $admin->assignRole($adminRole);
+        $writer = User::factory(10)->create();
+        // loop factory user
+        foreach ($writer as $user) {
+            $user->assignRole($writerRole);
+        }
 
         // User::factory(10)->create()->assignRole($writerRole);
     }

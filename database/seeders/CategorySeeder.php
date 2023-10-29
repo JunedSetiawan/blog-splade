@@ -14,14 +14,13 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // $categories = ['Technology', 'Lifestyle', 'Education', 'Travel', 'Finance', 'Art', 'Entertainment', 'Science'];
+        $categories = ['Technology', 'Lifestyle', 'Education', 'Travel', 'Finance', 'Art', 'Entertainment', 'Science'];
 
-        // foreach ($categories as $category) {
-        //     Category::create([
-        //         'name' => $category,
-        //         'slug' => Str::slug($category),
-        //     ]);
-        // }
-
+        foreach ($categories as $category) {
+            Category::create([
+                'name' => $category,
+                'slug' => Str::slug($category),
+            ]);
+        }
     }
 }

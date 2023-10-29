@@ -12,8 +12,11 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
+        $match_posts = Post::query()->where('category_id', $post->category_id)->where('id', '!=', $post->id)->limit(6)->get();
+
         return view('pages.post.show', [
-            'post' => $post
+            'post' => $post,
+            'match_posts' => $match_posts,
         ]);
     }
 }

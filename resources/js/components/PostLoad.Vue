@@ -74,6 +74,7 @@ const load = async ($state) => {
 
         const response = await fetch(apiUrl);
         const json = await response.json();
+        console.log(json);
 
         if (json.data.data.length === 0) {
             hasMorePages.value = false;
