@@ -39,16 +39,17 @@
 
                             <!-- Button Group -->
                             <div>
-                                <button type="button"
-                                    class="py-1.5 px-2.5 sm:py-2 sm:px-3 inline-flex justify-center items-center gap-x-1.5 sm:gap-x-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-xs sm:text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
-                                    </svg>
-
-                                    Report
-                                </button>
+                                <details class="dropdown dropdown-end">
+                                    <summary
+                                        class="m-1 btn min-h-0 h-6 p-0 border-0 bg-inherit hover:bg-inherit active:bg-inherit">
+                                        <x-heroicon-o-ellipsis-vertical />
+                                    </summary>
+                                    <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                                        <li><a><x-heroicon-o-bookmark /> Save post</a></li>
+                                        <li class="text-red-600 hover:text-current"><a><x-heroicon-o-flag /> Report</a>
+                                        </li>
+                                    </ul>
+                                </details>
                             </div>
                             <!-- End Button Group -->
                         </div>
@@ -76,6 +77,24 @@
                 <p class="my-4 text-base-content text-md text-semibold">
                     {!! $post->body !!}
                 </p>
+                <div>
+                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
+                        href="#">
+                        {{ $post->category->name }}
+                    </a>
+                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
+                        href="#">
+                        Web development
+                    </a>
+                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
+                        href="#">
+                        Free
+                    </a>
+                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
+                        href="#">
+                        Team
+                    </a>
+                </div>
             </div>
             <!-- End Content -->
             <div class="border-t-2 border-gray-300 my-12"></div>
