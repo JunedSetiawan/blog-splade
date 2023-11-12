@@ -34,7 +34,7 @@
                         href="/">Home</Link>
                     <Link
                         class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus"
-                        href="{{ route('post.category') }}">Post</Link>
+                        href="{{ route('post.index', 'all') }}">Post</Link>
                     <Link
                         class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus"
                         href="{{ route('post.category') }}">Categories</Link>

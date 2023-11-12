@@ -41,6 +41,8 @@ Route::middleware('splade')->group(function () {
     Route::get('/post-category/{slug}/load-more', [PostCategoryController::class, 'loadMoreCategory'])
         ->name('category.load-more');
 
+    Route::get('/posts/{filter}', [PostController::class, 'index'])->name('post.index');
+    Route::get('/posts/{filter}/load', [PostController::class, 'filter'])->name('post.filter.load');
     Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 
     Route::middleware('auth')->group(function () {

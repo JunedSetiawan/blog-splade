@@ -29,16 +29,13 @@
     <div class="container px-6 py-3 mx-auto">
         <div
             class="flex overflow-x-scroll scrolle overflow-y-hidden border-b border-gray-200 whitespace-nowrap dark:border-gray-700 my-4">
-            <x-tab-link :href="route('post.category')" :aktif="request()->routeIs('post.category')">
-                All
-            </x-tab-link>
-            @foreach ($categories as $key => $category)
-                <x-tab-link :href="route('category.select', ['slug' => $category->slug])" :aktif="$category->slug === request()->route('slug')">
-                    {{ $category->name }}
+            @foreach ($filters as $filter)
+                <x-tab-link :href="route('post.index', ['filter' => $filter])" :aktif="$selectedFilter === $filter">
+                    {{ ucfirst($filter) }}
                 </x-tab-link>
             @endforeach
         </div>
-        <post-load :category-slug="{{ json_encode(request()->route('slug')) }}" />
+        <post-load :filter="{{ json_encode(request()->route('filter')) }}" />
     </div>
     <div class="mt-14 inset-x-0 top-0 h-2 bg-gradient-to-l from-pink-500 via-red-500 to-yellow-500"></div>
     <x-footer>

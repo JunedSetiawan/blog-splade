@@ -22,14 +22,13 @@ class PostCategoryController extends Controller
 
     public function categorySelect(Request $request)
     {
-        $posts = Post::with(['category', 'user'])->whereHas('category', function ($query) use ($request) {
-            $query->where('slug', $request->slug);
-        })->latest()->paginate(10);
+        // $posts = Post::with(['category', 'user'])->whereHas('category', function ($query) use ($request) {
+        //     $query->where('slug', $request->slug);
+        // })->latest()->paginate(10);
         $categories = Category::get();
-
         return view('pages.post.post-category', [
             'categories' => $categories,
-            'posts' => $posts,
+
         ]);
     }
 
