@@ -11,6 +11,7 @@
                         :src="post.image ? `${post.image}` : 'default.jpg'"
                         class="object-cover w-full h-48 sm:h-56"
                         alt=""
+                        loading="lazy"
                     />
                     <div class="pt-5">
                         <p

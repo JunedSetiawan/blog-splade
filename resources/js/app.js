@@ -1,7 +1,7 @@
 import "./bootstrap";
 import "../css/app.css";
 import "@protonemedia/laravel-splade/dist/style.css";
-
+import "@protonemedia/laravel-splade/dist/jodit.css";
 
 import ThemeToggle from "./components/ThemeToggle.vue";
 import PostLoad from "./components/PostLoad.vue";

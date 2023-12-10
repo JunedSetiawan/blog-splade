@@ -38,9 +38,11 @@
                     <Link
                         class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus"
                         href="{{ route('post.category') }}">Categories</Link>
-                    <Link
-                        class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus"
-                        href="#">Report</Link>
+                    @auth
+                        <Link
+                            class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus font-bold"
+                            href="{{ route('personal-post') }}">My Post</Link>
+                    @endauth
                 </div>
                 @if (Route::has('login'))
                     @auth
@@ -57,12 +59,15 @@
                                     class="z-10 menu menu-sm dropdown-content p-2 shadow bg-base-100 rounded-box w-52 space-y-3">
                                     <span class="badge">{{ Auth::user()->name }}</span>
                                     <div class="badge badge-primary badge-outline">{{ Auth::user()->email }}</div>
-                                    <li class="my-4">
-                                        <Link href="{{ route('dashboard') }}"
-                                            class="text-base-content justify-between font-medium">
-                                        Dashboard
-                                        </Link>
-                                    </li>
+                                    @can('access-dashboard')
+                                        <li class="my-4">
+                                            <Link href="{{ route('dashboard') }}"
+                                                class="text-base-content justify-between font-medium">
+                                            Dashboard
+                                            </Link>
+                                        </li>
+                                    @endcan
+
                                     <li class="my-4">
                                         <Link href="{{ route('profile.edit') }}" class="text-base-content justify-between">
                                         Profile

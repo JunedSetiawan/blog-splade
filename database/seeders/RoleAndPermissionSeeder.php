@@ -27,7 +27,10 @@ class RoleAndPermissionSeeder extends Seeder
 
         //Make permission for report
         Permission::create(['name' => 'view-reports']);
+        Permission::create(['name' => 'accept-reports']);
         Permission::create(['name' => 'create-reports']);
+
+        Permission::create(['name' => 'access-dashboard']);
 
         //Make Role
         $adminRole = Role::create(['name' => 'admin']);
@@ -39,13 +42,18 @@ class RoleAndPermissionSeeder extends Seeder
             'delete-users',
             'create-posts',
             'edit-posts',
-            'delete-posts'
+            'delete-posts',
+            'access-dashboard',
+            'view-reports',
+            'accept-reports',
+            'create-reports'
         ]);
 
         $writerRole->givePermissionTo([
             'create-posts',
             'edit-posts',
-            'delete-posts'
+            'delete-posts',
+            'create-reports'
         ]);
 
         $writer = User::factory(10)->create();
