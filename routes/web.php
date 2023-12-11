@@ -5,8 +5,9 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\PostCategoryController;
 use App\Http\Controllers\ImageUpload;
 use App\Http\Controllers\Post\PostController;
+use App\Http\Controllers\Post\ReportController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,7 +43,7 @@ Route::middleware('splade')->group(function () {
             Route::patch('post/{id}/edit', [PostController::class, 'update'])->name('post.update');
             Route::delete('post/{id}/delete', [PostController::class, 'destroy'])->name('post.destroy');
         });
-        Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('permission:access-dashboard')->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('role:admin', 'permission:access-dashboard')->name('dashboard');
 
         // route for profile
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -77,10 +78,11 @@ Route::middleware('splade')->group(function () {
         //route for reports
         Route::post('/posts/report', [PostController::class, 'reportStore'])->name('post.report.store');
         Route::group(['middleware' => ['permission:view-reports|accept-reports|create-reports']], function () {
-            Route::get('/posts/report', [PostController::class, 'report'])->name('post.report');
-            Route::delete('/posts/report/{id}/delete', [PostController::class, 'reportDestroy'])->name('post.report.destroy');
-            Route::patch('/posts/report/{id}/accept', [PostController::class, 'reportAccept'])->name('post.report.accept');
+            Route::get('/posts/report', [ReportController::class, 'report'])->name('post.report');
+            Route::delete('/posts/report/{id}/delete', [ReportController::class, 'reportDestroy'])->name('post.report.destroy');
+            Route::patch('/posts/report/{id}/accept', [ReportController::class, 'reportAccept'])->name('post.report.accept');
         });
+        Route::get('/posts/mypost', [PostController::class, 'personal_post'])->name('personal-post');
     });
 
     Route::get('/', [HomeController::class, 'index'])->name('main');
@@ -93,7 +95,6 @@ Route::middleware('splade')->group(function () {
         ->name('category.load-more');
 
     //route for posts
-    Route::get('/posts/mypost', [PostController::class, 'personal_post'])->name('personal-post');
 
     //route for posts filter
     Route::get('/posts/{filter}', [PostController::class, 'index'])->name('post.index');

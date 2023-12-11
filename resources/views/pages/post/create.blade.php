@@ -17,7 +17,7 @@
 
             <x-splade-wysiwyg name="body" label="Content Post" />
 
-            <x-splade-select name="category" :options="$categories" label="Category Post"
+            <x-splade-select name="category_id" :options="$categories" label="Category Post"
                 placeholder="Select the category..." />
 
             <x-splade-file name="image" filepond preview accept="image/png,image/jpg,image/jpeg" label="Image post" />

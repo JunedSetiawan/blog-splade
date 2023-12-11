@@ -11,7 +11,7 @@
         </svg>
     </label>
 </li>
-@can('access-dashboard')
+@hasrole('admin')
     @foreach ($sidebarMenu as $item)
         @if ($loop->index != 0)
             <div class="divider"></div>
@@ -49,7 +49,7 @@
             @endif
         @endforeach
     @endforeach
-@endcan
+@endhasrole
 {{-- <x-splade-script>
     const activeMenus = document.querySelectorAll('.sidebar .menu li .active');
 

@@ -59,14 +59,14 @@
                                     class="z-10 menu menu-sm dropdown-content p-2 shadow bg-base-100 rounded-box w-52 space-y-3">
                                     <span class="badge">{{ Auth::user()->name }}</span>
                                     <div class="badge badge-primary badge-outline">{{ Auth::user()->email }}</div>
-                                    @can('access-dashboard')
+                                    @hasrole('admin')
                                         <li class="my-4">
                                             <Link href="{{ route('dashboard') }}"
                                                 class="text-base-content justify-between font-medium">
                                             Dashboard
                                             </Link>
                                         </li>
-                                    @endcan
+                                    @endhasrole
 
                                     <li class="my-4">
                                         <Link href="{{ route('profile.edit') }}" class="text-base-content justify-between">

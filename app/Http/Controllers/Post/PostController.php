@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use ProtoneMedia\Splade\Facades\Toast;
 
 class PostController extends Controller
 {
@@ -84,27 +87,26 @@ class PostController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        dd($request->all());
-        $request->validate([
-            'title' => 'required|min:10|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'body' => 'required|min:10',
-            'thumbnail' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        $this->authorize('create', Post::class);
 
-        $thumbnail = $request->file('thumbnail')->store('images/posts');
+        if ($request->hasFile('image')) {
+            $ext = $request->file('image')->getClientOriginalExtension();
+            $data = $request->file('image')->store('public/images');
+            $filename = pathinfo($data, PATHINFO_FILENAME) . '.' . $ext;
+        }
 
-        $post = Post::create([
-            'title' => $request->title,
-            'category_id' => $request->category_id,
-            'body' => $request->body,
-            'thumbnail' => $thumbnail,
-            'user_id' => Auth::user()->id,
-        ]);
+        $validated = $request->validated();
 
-        return redirect()->route('post.show', $post->id)->with('success', 'Post was created!');
+        $validated['image'] = $filename;
+        $validated['user_id'] = auth()->user()->id;
+
+        Post::create($validated);
+
+        Toast::message('Created Post Successfully!')->autoDismiss(5);
+
+        return redirect()->route('personal-post');
     }
 
     public function edit($id)
@@ -147,10 +149,23 @@ class PostController extends Controller
 
     public function destroy($id)
     {
+
         $post = Post::findOrFail($id);
+        $this->authorize('delete', [$post, Post::class]);
+
+        // Use the public disk and the correct file path
+        $filePath = 'images/' . $post->image;
+
+        // Check if the file exists
+        if (Storage::disk('public')->exists($filePath)) {
+            // Delete the file
+            Storage::disk('public')->delete($filePath);
+        }
 
         $post->delete();
 
-        return redirect()->route('post.index')->with('success', 'Post was deleted!');
+        Toast::message('Deleted Post Successfully!')->autoDismiss(5);
+
+        return redirect()->route('personal-post');
     }
 }
