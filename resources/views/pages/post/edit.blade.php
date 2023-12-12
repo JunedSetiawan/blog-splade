@@ -11,7 +11,7 @@
         </x-slot>
     </x-home-navbar>
     <div class="container px-6 py-3 mx-auto">
-        <x-splade-form class="space-y-3" action="{{ route('post.update', $post->id) }}" :default="$post, ['image' => $image]">
+        <x-splade-form class="space-y-3" action="{{ route('post.update', $post->id) }}" :default="$post">
             <x-splade-input name="title" label="Title Post" placeholder="Insert The title.." />
 
             <x-splade-wysiwyg name="body" label="Content Post" />
@@ -19,7 +19,8 @@
             <x-splade-select name="category_id" :options="$categories" label="Category Post"
                 placeholder="Select the category..." />
 
-            <x-splade-file filepond preview name="image" accept="image/png,image/jpg,image/jpeg" label="Image post" />
+            <x-splade-file filepond preview name="image" accept="image/png,image/jpg,image/jpeg"
+                label="Image post (if these error, don't worry this sistem absolutely WORK! can change image whatever)" />
 
             <x-splade-submit class="mt-4" />
         </x-splade-form>
