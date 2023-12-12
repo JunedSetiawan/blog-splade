@@ -11,7 +11,8 @@
         </x-slot>
     </x-home-navbar>
     <div class="container px-6 py-3 mx-auto">
-        <x-splade-form class="space-y-3" action="{{ route('post.update', $post->id) }}" :default="$post">
+        <x-splade-form class="space-y-3" action="{{ route('post.update', $post->id) }}" method="patch" :default="$post">
+            @csrf
             <x-splade-input name="title" label="Title Post" placeholder="Insert The title.." />
 
             <x-splade-wysiwyg name="body" label="Content Post" />

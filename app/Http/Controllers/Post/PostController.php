@@ -126,7 +126,9 @@ class PostController extends Controller
 
     public function update(Request $request, $id)
     {
+        dd($request->all());
         $post = Post::findOrFail($id);
+
 
         $request->validate([
             'title' => 'required|min:10|max:255',
