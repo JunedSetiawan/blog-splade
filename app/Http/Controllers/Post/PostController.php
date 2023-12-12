@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use ProtoneMedia\Splade\Facades\Toast;
+use ProtoneMedia\Splade\FileUploads\ExistingFile;
 
 class PostController extends Controller
 {
@@ -112,11 +113,14 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-
+        $categories = Category::query()->pluck('name', 'id')->toArray();
+        $image = ExistingFile::fromDisk('public')->get('images/' . $post->image);
         $this->spladeTitle('Edit Post');
 
         return view('pages.post.edit', [
             'post' => $post,
+            'categories' => $categories,
+            'image' => $image
         ]);
     }
 

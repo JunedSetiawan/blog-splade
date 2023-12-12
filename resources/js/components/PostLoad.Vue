@@ -8,7 +8,7 @@
                     class="overflow-hidden transition-shadow duration-300 rounded shadow-sm"
                 >
                     <img
-                        :src="post.image ? `${post.image}` : 'default.jpg'"
+                        :src="`/post/${post.image ?? 'default.jpg'}/image`"
                         class="object-cover w-full h-48 sm:h-56"
                         alt=""
                         loading="lazy"

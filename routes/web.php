@@ -103,5 +103,5 @@ Route::middleware('splade')->group(function () {
 
 
 
-    Route::get('{filename}', [ImageUpload::class, 'getImageFile'])->name('getImage');
+    Route::get('/post/{filename}/image', [ImageUpload::class, 'getImageFile'])->name('getImage');
 });

@@ -40,7 +40,8 @@
                                     <p class="text-sm font-medium leading-4 text-gray-600">Author</p>
                                 </div>
                             </div>
-                            <div>
+                            <div class="flex space-x-3">
+                                <Link href="{{ route('post.edit', $post->id) }}"><x-heroicon-o-pencil /></Link>
                                 <x-splade-form action="{{ route('post.destroy', $post->id) }}" confirm="Delete post"
                                     confirm-text="Are you sure you want to delete your post?" method="delete">
                                     @csrf
