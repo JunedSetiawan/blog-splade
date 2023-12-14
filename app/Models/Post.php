@@ -27,4 +27,9 @@ class Post extends Model
     {
         return Str::limit(strip_tags(nl2br($this->body)), 90);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

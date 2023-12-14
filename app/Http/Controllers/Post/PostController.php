@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
@@ -60,11 +61,14 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        $match_posts = Post::query()->where('category_id', $post->category_id)->where('id', '!=', $post->id)->limit(6)->get();
+        $comments = $post->comments()->with('user')->orderBy('created_at', 'desc')->get();
+
+        $match_posts = Post::query()->with('category')->where('category_id', $post->category_id)->where('id', '!=', $post->id)->limit(6)->get();
 
         return view('pages.post.show', [
             'post' => $post,
             'match_posts' => $match_posts,
+            'comments' => $comments
         ]);
     }
     public function personal_post()
@@ -124,33 +128,52 @@ class PostController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, $id)
     {
-        dd($request->all());
+
         $post = Post::findOrFail($id);
 
+        $this->authorize('edit', [$post, Post::class]);
 
-        $request->validate([
-            'title' => 'required|min:10|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'body' => 'required|min:10',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        // Update judul dan konten aktivitas
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->category_id = $request->category_id;
+        $post->user_id = auth()->user()->id;
 
-        $thumbnail = $post->thumbnail;
+        // Jika ada file gambar baru yang diunggah
+        if ($request->hasFile('image')) {
+            // Menghapus gambar lama (jika ada)
 
-        if ($request->hasFile('thumbnail')) {
-            $thumbnail = $request->file('thumbnail')->store('images/posts');
+            if ($post->image) {
+                // Use the public disk and the correct file path
+                $filePath = 'images/' . $post->image;
+
+                // Check if the file exists
+                if (Storage::disk('public')->exists($filePath)) {
+                    // Delete the file
+                    Storage::disk('public')->delete($filePath);
+                }
+            }
+
+            // Upload dan menyimpan gambar baru
+            $ext = $request->file('image')->getClientOriginalExtension();
+            $data = $request->file('image')->store('public/images');
+            $filename = pathinfo($data, PATHINFO_FILENAME) . '.' . $ext;
+
+            $post->image = $filename;
+        } else {
+            // Jika tidak ada file gambar baru, tetapi ada gambar lama yang dipilih
+            if ($request->image_existing) {
+                $post->image = $request->image_existing;
+            }
         }
 
-        $post->update([
-            'title' => $request->title,
-            'category_id' => $request->category_id,
-            'body' => $request->body,
-            'thumbnail' => $thumbnail,
-        ]);
+        $post->save();
 
-        return redirect()->route('post.show', $post->id)->with('success', 'Post was updated!');
+        Toast::message('Berhasil Mengubah Data Aktivitas')->autoDismiss(5);
+
+        return redirect()->route('personal-post');
     }
 
     public function destroy($id)
@@ -173,5 +196,36 @@ class PostController extends Controller
         Toast::message('Deleted Post Successfully!')->autoDismiss(5);
 
         return redirect()->route('personal-post');
+    }
+
+    public function likeStore($id)
+    {
+        $post = Post::findOrFail($id);
+        if ($post->likes_count >= 0) {
+            $user = Auth::user();
+            if ($user->hasLiked($post)) {
+                // Unlike the post
+                $post->decrement('likes_count');
+                $user->likes()->detach($post);
+            } else {
+                // Like the post
+                $post->increment('likes_count');
+                $user->likes()->attach($post);
+            }
+
+            return $post->save();
+        }
+    }
+
+    public function commentStore(StoreCommentRequest $request, $id)
+    {
+        $post = Post::findOrFail($id);
+        $validated = $request->validated();
+
+        $validated['user_id'] = auth()->user()->id;
+
+        $post->comments()->create($validated);
+
+        Toast::message('Commented Post Successfully!')->autoDismiss(5);
     }
 }

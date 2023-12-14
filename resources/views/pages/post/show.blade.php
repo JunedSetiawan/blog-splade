@@ -96,6 +96,80 @@
                     </a>
                 </div>
             </div>
+
+            <section class="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
+                <div class="max-w-2xl mx-auto px-4">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
+                            <x-splade-rehydrate on="comment-added">
+                                ({{ $post->comments->count() }}) </x-splade-rehydrate>
+                        </h2>
+                    </div>
+                    <x-splade-form class="mb-6" action="{{ route('post.comment.store', $post->id) }}" stay
+                        @success="$splade.emit('comment-added')" reset-on-submit>
+
+                        <x-splade-textarea name="body" rows="6"
+                            class="px-0 w-full text-sm text-gray-900 mb-5 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                            placeholder="Write a comment..." required></x-splade-textarea>
+
+                        <x-splade-submit label='Send' />
+                    </x-splade-form>
+                    <x-splade-rehydrate on="comment-added">
+                        @forelse ($comments as $comment)
+                            <article class="py-4 my-4 text-base bg-white rounded-lg border-t border-gray-20">
+                                <footer class="flex justify-between items-center mb-2">
+                                    <div class="flex items-center">
+                                        <p
+                                            class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                                            <img class="mr-2 w-6 h-6 rounded-full"
+                                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                                alt="Michael Gough">{{ $comment->user->name }}
+                                        </p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
+                                                datetime="2022-02-08"
+                                                title="February 8th, 2022">{{ $comment->created_at->diffForHumans() }}</time>
+                                        </p>
+                                    </div>
+                                    <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                                        class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                        type="button">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 3">
+                                            <path
+                                                d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
+                                        </svg>
+                                        <span class="sr-only">Comment settings</span>
+                                    </button>
+                                    <!-- Dropdown menu -->
+                                    <div id="dropdownComment1"
+                                        class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                            aria-labelledby="dropdownMenuIconHorizontalButton">
+                                            <li>
+                                                <a href="#"
+                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
+                                            </li>
+                                            <li>
+                                                <a href="#"
+                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </footer>
+                                <p class="text-gray-500 dark:text-gray-400">{{ $comment->body }}</p>
+
+                            </article>
+                        @empty
+                            This post doesn't have comments yet..
+                        @endforelse
+                    </x-splade-rehydrate>
+
+                </div>
+            </section>
             <!-- End Content -->
             <div class="border-t-2 border-gray-300 my-12"></div>
             <div class="text-center">
@@ -104,27 +178,27 @@
                 <p class="mt-4 text-gray-500">We have curated the best article based on your internet topic</p>
             </div>
             <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full my-8">
-                @forelse($match_posts as $post)
+                @forelse($match_posts as $match)
                     <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
-                        <img src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
+                        <img src="{{ route('getImage', ['filename' => $match->image ?? 'default.jpg']) }}"
                             class="object-cover w-full h-48 sm:h-56" alt="" />
                         <div class="pt-5">
                             <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
                                 <span
-                                    class="text-base-content">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
+                                    class="text-base-content">{{ $match->user->name . ' - ' . $match->created_at->diffForHumans() }}</span>
                             </p>
-                            <Link href="{{ route('post.show', $post->id) }}">
+                            <Link href="{{ route('post.show', $match->id) }}">
                             <h2
                                 class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors
                         duration-200">
-                                {{ $post->title }}</h2>
+                                {{ $match->title }}</h2>
                             <p class="mb-2 text-base-content">
-                                {{ $post->shortBody() }}
+                                {{ $match->shortBody() }}
                             </p>
                             </Link>
                             <div class="mt-4 space-x-2">
                                 <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                                    {{ $post->category->name }}
+                                    {{ $match->category->name }}
                                 </div>
                                 <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
                             </div>
@@ -150,14 +224,25 @@
                 <div class="tooltip" data-tip="Likes">
                     <div class="inline-block">
                         <button type="button"
-                            class="flex items-center gap-x-2 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                fill="currentColor" viewBox="0 0 16 16">
-                                <path
-                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                            </svg>
-
-                            <p>{{ $post->likes_count }}</p>
+                            class="flex items-center gap-x-2 text-sm text-gray-500 hover:text-gray-800">
+                            <div class="flex flex-row space-x-2 items-center">
+                                <div>
+                                    <x-splade-form action="{{ route('post.like.store', $post->id) }}" stay
+                                        @success="$splade.emit('likes-added')">
+                                        <button type="submit"><svg class="w-4 h-4"
+                                                xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" viewBox="0 0 16 16">
+                                                <path
+                                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                                            </svg> </button>
+                                    </x-splade-form>
+                                </div>
+                                <div>
+                                    <x-splade-rehydrate on="likes-added">
+                                        {{ $post->likes_count }}
+                                    </x-splade-rehydrate>
+                                </div>
+                            </div>
                             <span
                                 class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm dark:bg-black"
                                 role="tooltip">
@@ -165,27 +250,6 @@
                             </span>
                         </button>
                     </div>
-                </div>
-                <!-- Button -->
-
-                <div class="block h-3 border-r border-gray-300 mx-3 dark:border-gray-600"></div>
-
-                <!-- Button -->
-                <div class="hs-tooltip inline-block">
-                    <button type="button"
-                        class="hs-tooltip-toggle flex items-center gap-x-2 text-sm text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            fill="currentColor" viewBox="0 0 16 16">
-                            <path
-                                d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z" />
-                        </svg>
-                        0
-                        <span
-                            class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded-md shadow-sm dark:bg-black"
-                            role="tooltip">
-                            Comment
-                        </span>
-                    </button>
                 </div>
                 <!-- Button -->
 
