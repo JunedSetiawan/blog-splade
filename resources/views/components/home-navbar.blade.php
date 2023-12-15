@@ -42,6 +42,9 @@
                         <Link
                             class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus font-bold"
                             href="{{ route('personal-post') }}">My Post</Link>
+                        <Link
+                            class="text-base-content transition-colors duration-300 transform lg:mx-6 hover:text-secondary-focus font-bold"
+                            href="{{ route('post.collections') }}">Collections</Link>
                     @endauth
                 </div>
                 @if (Route::has('login'))

@@ -101,20 +101,23 @@
                 <div class="max-w-2xl mx-auto px-4">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Discussion
-                            <x-splade-rehydrate on="comment-added">
+                            <x-splade-rehydrate on="comment-added, comment-deleted">
                                 ({{ $post->comments->count() }}) </x-splade-rehydrate>
                         </h2>
                     </div>
-                    <x-splade-form class="mb-6" action="{{ route('post.comment.store', $post->id) }}" stay
-                        @success="$splade.emit('comment-added')" reset-on-submit>
+                    @auth
+                        <x-splade-form class="mb-6" action="{{ route('post.comment.store', $post->id) }}" stay
+                            @success="$splade.emit('comment-added')">
 
-                        <x-splade-textarea name="body" rows="6"
-                            class="px-0 w-full text-sm text-gray-900 mb-5 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                            placeholder="Write a comment..." required></x-splade-textarea>
+                            <x-splade-textarea name="body" rows="6"
+                                class="px-0 w-full text-sm text-gray-900 mb-5 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                placeholder="Write a comment..." required />
 
-                        <x-splade-submit label='Send' />
-                    </x-splade-form>
-                    <x-splade-rehydrate on="comment-added">
+                            <x-splade-submit label='Send' />
+                        </x-splade-form>
+                    @endauth
+
+                    <x-splade-rehydrate on="comment-added, comment-deleted">
                         @forelse ($comments as $comment)
                             <article class="py-4 my-4 text-base bg-white rounded-lg border-t border-gray-20">
                                 <footer class="flex justify-between items-center mb-2">
@@ -122,43 +125,27 @@
                                         <p
                                             class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
                                             <img class="mr-2 w-6 h-6 rounded-full"
-                                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                                                alt="Michael Gough">{{ $comment->user->name }}
+                                                src="https://api.dicebear.com/6.x/identicon/svg?scale=75&seed={{ $comment->user->name }}"
+                                                alt="{{ $comment->user->name }}">{{ $comment->user->name }}
                                         </p>
                                         <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate
                                                 datetime="2022-02-08"
                                                 title="February 8th, 2022">{{ $comment->created_at->diffForHumans() }}</time>
                                         </p>
                                     </div>
-                                    <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
-                                        class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                                        type="button">
-                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor" viewBox="0 0 16 3">
-                                            <path
-                                                d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                        </svg>
-                                        <span class="sr-only">Comment settings</span>
-                                    </button>
-                                    <!-- Dropdown menu -->
-                                    <div id="dropdownComment1"
-                                        class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="dropdownMenuIconHorizontalButton">
-                                            <li>
-                                                <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
-                                            </li>
-                                            <li>
-                                                <a href="#"
-                                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+
+                                    @auth
+                                        @if ($comment->user->id == auth()->user()->id)
+                                            <x-splade-form method="delete"
+                                                action="{{ route('post.comment.destroy', [$post->id, $comment->id]) }}"
+                                                stay @success="$splade.emit('comment-deleted')" confirm>
+                                                @csrf
+                                                <button type="submit">
+                                                    <x-heroicon-o-trash class="bg-red" />
+                                                </button>
+                                            </x-splade-form>
+                                        @endif
+                                    @endauth
                                 </footer>
                                 <p class="text-gray-500 dark:text-gray-400">{{ $comment->body }}</p>
 
@@ -167,7 +154,6 @@
                             This post doesn't have comments yet..
                         @endforelse
                     </x-splade-rehydrate>
-
                 </div>
             </section>
             <!-- End Content -->
@@ -229,9 +215,9 @@
                                 <div>
                                     <x-splade-form action="{{ route('post.like.store', $post->id) }}" stay
                                         @success="$splade.emit('likes-added')">
-                                        <button type="submit"><svg class="w-4 h-4"
-                                                xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" viewBox="0 0 16 16">
+                                        <button type="submit"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
+                                                width="16" height="16" fill="currentColor"
+                                                viewBox="0 0 16 16">
                                                 <path
                                                     d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                                             </svg> </button>

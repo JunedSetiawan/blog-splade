@@ -61,7 +61,7 @@ Route::middleware('splade')->group(function () {
 
         // create routes for comments
         Route::post('/post/{id}/comment', [PostController::class, 'commentStore'])->name('post.comment.store');
-        Route::delete('/post/{id}/comment/{comment_id}/delete', [PostController::class, 'commentDestroy'])
+        Route::delete('/post/{post:id}/comment/{comment:id}/delete', [PostController::class, 'commentDestroy'])
             ->name('post.comment.destroy');
 
         // create routes for likes

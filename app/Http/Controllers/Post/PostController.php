@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -227,5 +228,16 @@ class PostController extends Controller
         $post->comments()->create($validated);
 
         Toast::message('Commented Post Successfully!')->autoDismiss(5);
+
+        return $post->save();
+    }
+
+    public function commentDestroy(Post $post, Comment $comment)
+    {
+        if ($comment->post_id === $post->id && auth()->user()->id === $comment->user_id) {
+            $comment->delete();
+            Toast::message('Comment Deleted !')->autoDismiss(5);
+            return redirect()->back();
+        }
     }
 }
