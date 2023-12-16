@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 
+use App\Models\Collection;
 use App\Models\Post;
+use App\Policies\CollectionPolicy;
 use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -17,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Post::class => PostPolicy::class,
+        Collection::class => CollectionPolicy::class
     ];
 
     /**
@@ -24,6 +27,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // gate for view-dashboard if has role admin
+        Gate::define('view-dashboard', function ($user) {
+            return $user->hasRole('admin');
+        });
     }
 }

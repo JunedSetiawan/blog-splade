@@ -31,8 +31,15 @@ class SidebarContent
                 ],
             ],
             [
-                'title' => 'Documentation',
-                'menus' => [],
+                'title' => 'Posts',
+                'menus' => [
+                    [
+                        'title' => 'All Posts',
+                        'route' => 'dashboard.posts',
+                        'icon' => @svg('heroicon-o-arrow-up-on-square-stack'),
+                        'menus' => [],
+                    ]
+                ],
             ]
         ];
     }

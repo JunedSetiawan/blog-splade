@@ -46,7 +46,8 @@ class RoleAndPermissionSeeder extends Seeder
             'access-dashboard',
             'view-reports',
             'accept-reports',
-            'create-reports'
+            'create-reports',
+            'delete-reports'
         ]);
 
         $writerRole->givePermissionTo([

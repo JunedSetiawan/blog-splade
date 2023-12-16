@@ -75,4 +75,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function collections()
+    {
+        return $this->hasMany(Collection::class);
+    }
+
+    public function hasCollection(Post $post)
+    {
+        return $this->collections()->where('post_id', $post->id)->exists();
+    }
 }

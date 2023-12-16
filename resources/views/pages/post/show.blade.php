@@ -45,7 +45,14 @@
                                         <x-heroicon-o-ellipsis-vertical />
                                     </summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                                        <li><a><x-heroicon-o-bookmark /> Save post</a></li>
+                                        <li>
+                                            <x-splade-form action="{{ route('post.collection.store') }}"
+                                                :default="['post_id' => $post->id]" stay>
+                                                @csrf
+                                                <button type="submit" class="flex"><x-heroicon-o-bookmark /> Save
+                                                    post</button>
+                                            </x-splade-form>
+                                        </li>
                                         <li class="text-red-600 hover:text-current"><a><x-heroicon-o-flag /> Report</a>
                                         </li>
                                     </ul>
@@ -107,7 +114,7 @@
                     </div>
                     @auth
                         <x-splade-form class="mb-6" action="{{ route('post.comment.store', $post->id) }}" stay
-                            @success="$splade.emit('comment-added')">
+                            @success="$splade.emit('comment-added')" reset-on-success>
 
                             <x-splade-textarea name="body" rows="6"
                                 class="px-0 w-full text-sm text-gray-900 mb-5 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
@@ -215,9 +222,9 @@
                                 <div>
                                     <x-splade-form action="{{ route('post.like.store', $post->id) }}" stay
                                         @success="$splade.emit('likes-added')">
-                                        <button type="submit"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
-                                                width="16" height="16" fill="currentColor"
-                                                viewBox="0 0 16 16">
+                                        <button type="submit"><svg class="w-4 h-4"
+                                                xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" viewBox="0 0 16 16">
                                                 <path
                                                     d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                                             </svg> </button>
