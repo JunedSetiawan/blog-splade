@@ -46,14 +46,36 @@
                                     </summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
                                         <li>
-                                            <x-splade-form action="{{ route('post.collection.store') }}"
-                                                :default="['post_id' => $post->id]" stay>
-                                                @csrf
-                                                <button type="submit" class="flex"><x-heroicon-o-bookmark /> Save
-                                                    post</button>
-                                            </x-splade-form>
+                                            @if (auth()->user()->hasCollection($post))
+                                                <span class="text-green-700"><x-heroicon-o-bookmark /> You already saved
+                                                    this post</span>
+                                            @else
+                                                <x-splade-form action="{{ route('post.collection.store') }}"
+                                                    :default="['post_id' => $post->id]">
+                                                    @csrf
+                                                    <button type="submit" class="flex"><x-heroicon-o-bookmark /> Save
+                                                        post</button>
+                                                </x-splade-form>
+                                            @endif
                                         </li>
-                                        <li class="text-red-600 hover:text-current"><a><x-heroicon-o-flag /> Report</a>
+                                        <li class="text-red-600 hover:text-current">
+                                            <Link href="#report-info"><x-heroicon-o-flag /> Report</Link>
+                                            <x-splade-modal name="report-info">
+                                                <h2 class="text-center text-red-600 text-lg font-semibold">Report Info !
+                                                </h2>
+                                                <x-splade-form action="{{ route('post.report.store', $post->id) }}"
+                                                    class="space-y-3" :default="$post" confirm>
+                                                    @csrf
+                                                    <x-splade-input name="title" label="Title Post" disabled />
+
+                                                    <x-splade-textarea name="description" rows="6"
+                                                        class="px-0 w-full text-sm text-gray-900 mb-5 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                                        placeholder="Write a your reason description..." required
+                                                        label="Description" />
+
+                                                    <x-splade-submit />
+                                                </x-splade-form>
+                                            </x-splade-modal>
                                         </li>
                                     </ul>
                                 </details>

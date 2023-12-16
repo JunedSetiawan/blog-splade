@@ -38,7 +38,20 @@ class SidebarContent
                         'route' => 'dashboard.posts',
                         'icon' => @svg('heroicon-o-arrow-up-on-square-stack'),
                         'menus' => [],
-                    ]
+                    ],
+                    [
+                        'title' => 'Report',
+                        'route' => '',
+                        'icon' => @svg('heroicon-o-flag'),
+                        'menus' => [
+                            [
+                                'title' => 'Report Posts',
+                                'route' => 'post.report',
+                                'icon' => '',
+                                'menus' => [],
+                            ],
+                        ],
+                    ],
                 ],
             ]
         ];

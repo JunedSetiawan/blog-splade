@@ -24,8 +24,8 @@ Route::group(['middleware' => ['can:view-dashboard', 'auth']], function () {
     });
 
     // route for Report Post
-    Route::group(['middleware' => ['permission:view-reports|accept-reports|delete-reports']], function () {
-        Route::get('/posts/report', [ReportController::class, 'report'])->name('post.report');
+    Route::group(['middleware' => ['permission:view-reports|accept-reports|delete-reports', 'role:admin']], function () {
+        Route::get('/posts/report', [ReportController::class, 'index'])->name('post.report');
         Route::delete('/posts/report/{id}/delete', [ReportController::class, 'reportDestroy'])->name('post.report.destroy');
         Route::patch('/posts/report/{id}/accept', [ReportController::class, 'reportAccept'])->name('post.report.accept');
     });

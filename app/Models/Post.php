@@ -37,4 +37,9 @@ class Post extends Model
     {
         return $this->hasMany(Collection::class);
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }

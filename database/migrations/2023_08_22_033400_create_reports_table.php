@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->uuid('post_id');
+            $table->uuid('post_id')->unique();
             $table->uuid('user_id');
             $table->string('description');
             $table->timestamps();
 
-            $table->foreign('post_id')->references('id')->on('posts');
+            $table->foreign('post_id')->references('id')->on('posts')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
