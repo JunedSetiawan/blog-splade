@@ -50,9 +50,8 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        if ($user->can('delete-posts')) {
+        if ($user->can('delete-posts') || $user->hasRole('admin') || $user->id === $post->user_id) {
             return true;
         }
-        return $user->id === $post->user_id;
     }
 }

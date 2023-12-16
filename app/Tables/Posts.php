@@ -26,7 +26,7 @@ class Posts extends AbstractTable
      */
     public function authorize(Request $request)
     {
-        if ($request->user()->can('create-posts') || $request->user()->can('edit-posts') || $request->user()->can('delete-posts') || $request->user()->can('view-dashboard') || $request->user()->hasRole('admin')) {
+        if ($request->user()->can('delete-posts') || $request->user()->can('view-dashboard') || $request->user()->hasRole('admin')) {
             return true;
         }
     }
@@ -50,11 +50,13 @@ class Posts extends AbstractTable
     public function configure(SpladeTable $table)
     {
         $table
-            ->withGlobalSearch(columns: ['id'])
+            ->searchInput('title', label: 'Search by title')
+            ->searchInput('category.name', label: 'Search by Category')
             ->column('title', sortable: true)
-            ->column('category.name')
-            ->column('user.name')
-            ->column('created_at')
+            ->column('category.name', label: 'Category')
+            ->column('user.name', label: 'Author')
+            ->column('created_at', sortable: true, as: fn ($created_at, $post) => $created_at->format('d/m/Y'))
+            ->bulkAction('Delete', each: fn (Post $post) => $post->delete(), confirm: true, confirmText: 'Are you sure you want to delete this post? (This action cannot be undone)')
             ->paginate(5);
 
         // ->searchInput()

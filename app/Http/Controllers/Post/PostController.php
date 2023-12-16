@@ -105,7 +105,7 @@ class PostController extends Controller
 
         $validated = $request->validated();
 
-        $validated['image'] = $filename;
+        $validated['image'] = $filename ?? null;
         $validated['user_id'] = auth()->user()->id;
 
         Post::create($validated);

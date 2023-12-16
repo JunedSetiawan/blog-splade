@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('collections', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->foreignUuid('user_id');
-            $table->foreignUuid('post_id')->nullable();
+            $table->foreignUuid('post_id')->nullable()->references('id')->on('posts')->cascadeOnDelete();
             $table->timestamps();
         });
     }

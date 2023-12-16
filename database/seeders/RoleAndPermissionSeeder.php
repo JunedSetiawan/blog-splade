@@ -29,6 +29,7 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'view-reports']);
         Permission::create(['name' => 'accept-reports']);
         Permission::create(['name' => 'create-reports']);
+        Permission::create(['name' => 'delete-reports']);
 
         Permission::create(['name' => 'access-dashboard']);
 
