@@ -29,4 +29,6 @@ Route::group(['middleware' => ['can:view-dashboard', 'auth']], function () {
         Route::delete('/posts/report/{id}/delete', [ReportController::class, 'reportDestroy'])->name('post.report.destroy');
         Route::patch('/posts/report/{id}/accept', [ReportController::class, 'reportAccept'])->name('post.report.accept');
     });
+
+    Route::get('/mark-as-read', [ReportController::class, 'markAsRead'])->name('mark-as-read');
 });

@@ -8,12 +8,42 @@
         <label tabindex="0" class="btn btn-ghost btn-circle">
             <div class="indicator">
                 <x-heroicon-o-bell-alert />
-                <span class="badge badge-xs bg-red-500 indicator-item"></span>
+                <span
+                    class="badge badge-md rounded-lg bg-red-500 indicator-item text-base-100">{{ auth()->user()->unreadNotifications->count() }}</span>
             </div>
         </label>
         <div tabindex="0" class="z-10 mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow">
             <div class="card-body">
-                You don't have any notifications
+                @if (auth()->user()->unreadNotifications->count() < 1)
+                    You don't have any notifications for reports.
+                @else
+                    <ul class="menu bg-base-200 w-full p-0 [&_li>*]:rounded-none">
+                        @foreach (auth()->user()->unreadNotifications as $notification)
+                            <li class="text-red-700">
+                                Some User Reported This Post
+                                <Link href="{{ route('post.show', $notification->data['data']['postId']) }}">
+                                {{ $notification->data['data']['postId'] }}</Link> Please, Check it out.
+                            </li>
+                        @endforeach
+                    </ul>
+                    <ul class="menu bg-base-200 w-full rounded-box">
+                        <li>
+                            <Link href="{{ route('mark-as-read') }}">Mark As Read</Link>
+                        </li>
+                    </ul>
+                @endif
+                <ul class="menu bg-base-200 w-full rounded-box">
+                    @foreach (auth()->user()->readNotifications as $notification)
+                        <li class="text-green-700 flex">
+                            <p>
+                                Some User Reported This Post
+                                <Link href="{{ route('post.show', $notification->data['data']['postId']) }}">
+                                {{ $notification->data['data']['postId'] }}</Link> Please, Check it out.
+                            </p>
+                        </li>
+                    @endforeach
+                </ul>
+
             </div>
         </div>
     </div>
