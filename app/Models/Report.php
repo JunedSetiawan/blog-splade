@@ -10,7 +10,7 @@ class Report extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['user_id', 'post_id', 'description'];
+    protected $fillable = ['user_id', 'post_id', 'description', 'status'];
 
     public function user()
     {

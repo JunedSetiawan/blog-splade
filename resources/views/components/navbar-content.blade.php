@@ -9,20 +9,28 @@
             <div class="indicator">
                 <x-heroicon-o-bell-alert />
                 <span
-                    class="badge badge-md rounded-lg bg-red-500 indicator-item text-base-100">{{ auth()->user()->unreadNotifications->count() }}</span>
+                    class="badge badge-md rounded-lg bg-red-500 indicator-item text-base-100">{{ $allNotifications->filter(function ($notification) {
+                            return is_null($notification->read_at);
+                        })->count() }}</span>
             </div>
         </label>
         <div tabindex="0" class="z-10 mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow">
             <div class="card-body">
-                @if (auth()->user()->unreadNotifications->count() < 1)
-                    You don't have any notifications for reports.
+
+                @if ($allNotifications->count() < 1)
+                    There are no notifications.
                 @else
                     <ul class="menu bg-base-200 w-full p-0 [&_li>*]:rounded-none">
-                        @foreach (auth()->user()->unreadNotifications as $notification)
-                            <li class="text-red-700">
+                        @foreach ($allNotifications as $notification)
+                            @php
+                                $notif = json_decode($notification->data);
+                            @endphp
+                            <li class="{{ is_null($notification->read_at) ? 'text-red-700' : 'text-green-700' }} flex">
                                 Some User Reported This Post
-                                <Link href="{{ route('post.show', $notification->data['data']['postId']) }}">
-                                {{ $notification->data['data']['postId'] }}</Link> Please, Check it out.
+                                <Link href="{{ route('post.show', $notif->data->postId) }}">
+                                {{ $notif->data->postId }}
+                                </Link> Please, Check it out.
+
                             </li>
                         @endforeach
                     </ul>
@@ -32,17 +40,6 @@
                         </li>
                     </ul>
                 @endif
-                <ul class="menu bg-base-200 w-full rounded-box">
-                    @foreach (auth()->user()->readNotifications as $notification)
-                        <li class="text-green-700 flex">
-                            <p>
-                                Some User Reported This Post
-                                <Link href="{{ route('post.show', $notification->data['data']['postId']) }}">
-                                {{ $notification->data['data']['postId'] }}</Link> Please, Check it out.
-                            </p>
-                        </li>
-                    @endforeach
-                </ul>
 
             </div>
         </div>

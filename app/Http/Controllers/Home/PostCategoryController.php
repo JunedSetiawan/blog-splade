@@ -37,7 +37,7 @@ class PostCategoryController extends Controller
         $perPage = 10; // Jumlah item yang ingin Anda muat setiap kali
         $page = $request->input('page', 1); // Ambil nomor halaman dari permintaan, default 1
 
-        $posts = Post::with('category', 'user')->orderBy('created_at')->paginate($perPage, ['*'], 'page', $page);
+        $posts = Post::with('category', 'user')->where('status', 'active')->orderBy('created_at')->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
             'data' => $posts, // Ambil item data dari objek Pagination
@@ -60,6 +60,7 @@ class PostCategoryController extends Controller
 
         $category = Category::where('slug', $slug)->firstOrFail();
         $posts = Post::with('category', 'user')
+            ->where('status', 'active')
             ->where('category_id', $category->id)
             ->orderBy('created_at')
             ->paginate($perPage, ['*'], 'page', $page);

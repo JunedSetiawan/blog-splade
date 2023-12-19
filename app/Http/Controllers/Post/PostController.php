@@ -42,13 +42,13 @@ class PostController extends Controller
         $page = $request->input('page', 1); // Ambil nomor halaman dari permintaan, default 1
 
         if ($filter === "latest") {
-            $posts = Post::with('category', 'user')->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
+            $posts = Post::with('category', 'user')->where('status', 'active')->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
         } elseif ($filter === 'oldest') {
-            $posts = Post::orderBy('created_at', 'asc')->with('category', 'user')->paginate($perPage, ['*'], 'page', $page);
+            $posts = Post::orderBy('created_at', 'asc')->where('status', 'active')->with('category', 'user')->paginate($perPage, ['*'], 'page', $page);
         } elseif ($filter === 'popular') {
-            $posts = Post::orderBy('likes_count', 'desc')->with('category', 'user')->paginate($perPage, ['*'], 'page', $page);
+            $posts = Post::orderBy('likes_count', 'desc')->where('status', 'active')->with('category', 'user')->paginate($perPage, ['*'], 'page', $page);
         } else {
-            $posts = Post::with('category', 'user')->inRandomOrder()->paginate($perPage, ['*'], 'page', $page);
+            $posts = Post::with('category', 'user')->where('status', 'active')->inRandomOrder()->paginate($perPage, ['*'], 'page', $page);
         }
 
         // Return the posts
@@ -61,10 +61,16 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
-
+        $match_posts = Post::query()->with('category')->where('category_id', $post->category_id)->where('id', '!=', $post->id)->where('status', 'active')->limit(6)->get();
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            return view('pages.post.report-show', [
+                'match_posts' => $match_posts,
+                'post' => $post
+            ]);
+        }
         $comments = $post->comments()->with('user')->orderBy('created_at', 'desc')->get();
 
-        $match_posts = Post::query()->with('category')->where('category_id', $post->category_id)->where('id', '!=', $post->id)->limit(6)->get();
 
         return view('pages.post.show', [
             'post' => $post,
@@ -118,6 +124,10 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            abort(404);
+        }
         $categories = Category::query()->pluck('name', 'id')->toArray();
         $image = ExistingFile::fromDisk('public')->get('images/' . $post->image);
         $this->spladeTitle('Edit Post');
@@ -133,6 +143,11 @@ class PostController extends Controller
     {
 
         $post = Post::findOrFail($id);
+
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            abort(404);
+        }
 
         $this->authorize('edit', [$post, Post::class]);
 
@@ -179,8 +194,12 @@ class PostController extends Controller
 
     public function destroy($id)
     {
-
         $post = Post::findOrFail($id);
+
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            abort(404);
+        }
         $this->authorize('delete', [$post, Post::class]);
 
         // Use the public disk and the correct file path
@@ -202,6 +221,12 @@ class PostController extends Controller
     public function likeStore($id)
     {
         $post = Post::findOrFail($id);
+
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            abort(404);
+        }
+
         if ($post->likes_count >= 0) {
             $user = Auth::user();
             if ($user->hasLiked($post)) {
@@ -221,6 +246,11 @@ class PostController extends Controller
     public function commentStore(StoreCommentRequest $request, $id)
     {
         $post = Post::findOrFail($id);
+
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            abort(404);
+        }
         $validated = $request->validated();
 
         $validated['user_id'] = auth()->user()->id;
@@ -234,6 +264,10 @@ class PostController extends Controller
 
     public function commentDestroy(Post $post, Comment $comment)
     {
+        if ($post->status === 'inactive') {
+            Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
+            abort(404);
+        }
         if ($comment->post_id === $post->id && auth()->user()->id === $comment->user_id) {
             $comment->delete();
             Toast::message('Comment Deleted !')->autoDismiss(5);

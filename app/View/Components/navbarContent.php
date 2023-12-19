@@ -21,6 +21,12 @@ class navbarContent extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.navbar-content');
+        $allNotifications = \Illuminate\Support\Facades\DB::table('notifications')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('components.navbar-content', [
+            'allNotifications' => $allNotifications
+        ]);
     }
 }

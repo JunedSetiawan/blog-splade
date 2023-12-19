@@ -65,7 +65,7 @@ Route::middleware('splade')->group(function () {
         Route::delete('/collection/{collection:id}/delete', [CollectionController::class, 'destroy'])->name('post.collection.delete');
 
         //route for reports
-        Route::post('/posts/{post:id}/report', [ReportController::class, 'store'])->name('post.report.store');
+        Route::post('/posts/{post:id}/report', [ReportController::class, 'store'])->name('post.report.store')->middleware(['permission:create-reports']);
 
         Route::get('/posts/mypost', [PostController::class, 'personal_post'])->name('personal-post');
     });

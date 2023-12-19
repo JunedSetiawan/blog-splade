@@ -55,6 +55,11 @@ class Posts extends AbstractTable
             ->column('title', sortable: true)
             ->column('category.name', label: 'Category')
             ->column('user.name', label: 'Author')
+            ->column('status', label: 'Status', as: fn ($status, $post) => $status == 'active' ? 'Active' : 'Inactive')
+            ->selectFilter('status', label: 'Filter by Status', options: [
+                'active' => 'Active',
+                'inactive' => 'Inactive'
+            ])
             ->column('created_at', sortable: true, as: fn ($created_at, $post) => $created_at->format('d/m/Y'))
             ->bulkAction('Delete', each: fn (Post $post) => $post->delete(), confirm: true, confirmText: 'Are you sure you want to delete this post? (This action cannot be undone)')
             ->paginate(5);

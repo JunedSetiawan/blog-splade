@@ -11,8 +11,8 @@ class HomeController extends Controller
     public function index()
     {
         $this->spladeTitle('Blog Splade');
-        $recent_posts = Post::with('category', 'user')->latest()->limit(4)->get();
-        $posts = Post::with('category', 'user')->paginate(6);
+        $recent_posts = Post::with('category', 'user')->where('status', 'active')->latest()->limit(4)->get();
+        $posts = Post::with('category', 'user')->where('status', 'active')->paginate(6);
 
         return view('pages.home.home', [
             'recent_posts' => $recent_posts,

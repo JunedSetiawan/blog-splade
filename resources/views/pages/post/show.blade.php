@@ -46,17 +46,20 @@
                                     </summary>
                                     <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
                                         <li>
-                                            @if (auth()->user()->hasCollection($post))
-                                                <span class="text-green-700"><x-heroicon-o-bookmark /> You already saved
-                                                    this post</span>
-                                            @else
-                                                <x-splade-form action="{{ route('post.collection.store') }}"
-                                                    :default="['post_id' => $post->id]">
-                                                    @csrf
-                                                    <button type="submit" class="flex"><x-heroicon-o-bookmark /> Save
-                                                        post</button>
-                                                </x-splade-form>
-                                            @endif
+                                            @auth
+
+                                                @if (auth()->user()->hasCollection($post))
+                                                    <span class="text-green-700"><x-heroicon-o-bookmark /> You already saved
+                                                        this post</span>
+                                                @else
+                                                    <x-splade-form action="{{ route('post.collection.store') }}"
+                                                        :default="['post_id' => $post->id]">
+                                                        @csrf
+                                                        <button type="submit" class="flex"><x-heroicon-o-bookmark /> Save
+                                                            post</button>
+                                                    </x-splade-form>
+                                                @endif
+                                            @endauth
                                         </li>
                                         <li class="text-red-600 hover:text-current">
                                             <Link href="#report-info"><x-heroicon-o-flag /> Report</Link>
