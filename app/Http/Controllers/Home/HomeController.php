@@ -19,4 +19,18 @@ class HomeController extends Controller
             'posts' => $posts,
         ]);
     }
+
+    public function search()
+    {
+        // search posts
+        $posts = Post::with('category', 'user')->where('status', 'active')->where('title', 'LIKE', '%' . request('search') . '%')->paginate(6);
+
+        // search post count
+        $posts_count = $posts->total();
+
+        return view('pages.home.home', [
+            'posts' => $posts,
+            'posts_count' => $posts_count,
+        ]);
+    }
 }

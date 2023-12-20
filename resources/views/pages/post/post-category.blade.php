@@ -7,12 +7,6 @@
                         <h2 class="text-2xl font-semibold tracking-tight text-gray-800 xl:text-3xl dark:text-white">
                             Blog Post Splade
                         </h2>
-                        <x-splade-form class="mx-auto flex flex-row ">
-                            <div class="flex mx-auto space-x-2">
-                                <x-splade-input name="search" float="true" label="Search for Post..." size="30" />
-                                <x-splade-submit label="Search" class="my-5 bg-base-content text-base-200 border-0" />
-                            </div>
-                        </x-splade-form>
                     </div>
 
                     <div class="lg:mt-0">

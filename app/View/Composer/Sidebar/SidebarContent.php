@@ -40,6 +40,12 @@ class SidebarContent
                         'menus' => [],
                     ],
                     [
+                        'title' => 'All Users',
+                        'route' => 'users.index',
+                        'icon' => @svg('heroicon-o-user-circle'),
+                        'menus' => [],
+                    ],
+                    [
                         'title' => 'Report',
                         'route' => '',
                         'icon' => @svg('heroicon-o-flag'),

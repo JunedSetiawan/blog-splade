@@ -9,7 +9,7 @@
                         Ideas
                     </h1>
                     <p class="mt-6 text-base-content">Exploring the Boundless Horizons of Technology</p>
-                    <x-splade-form class="mx-auto flex flex-row ">
+                    <x-splade-form class="mx-auto flex flex-row" action="{{ route('search') }}" method="get">
                         <div class="flex mx-auto space-x-2">
                             <x-splade-input name="search" float="true" label="Search.." size="60" />
                             <x-splade-submit label="Search" class="my-5 bg-base-content text-base-200 border-0" />
@@ -20,61 +20,63 @@
         </x-slot>
     </x-home-navbar>
     <div class="container px-6 py-3 mx-auto">
-        <h1 class="mb-4 font-semibold text-2xl text-base-content flex justify-between">Recent blog posts <span
-                class="underline font-medium text-lg text-primary-focus"><a href="#">Load
-                    More</a></span></h1>
-        <div class="lg:grid grid-cols-2 lg:gap-4 gap-3 lg:space-y-1 space-y-5">
-            @foreach ($recent_posts as $key => $post)
-                <div class="sm:flex lg:items-end group">
-                    <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
-                        <img class="w-full rounded-md h-56 md:h-60 lg:h-48 lg:w-40 object-cover object-center"
-                            src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
-                            alt="default image">
-                    </div>
-                    <div>
-                        <span
-                            class="text-sm text-base-content font-medium">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
-                        <Link href="{{ route('post.show', $post->id) }}">
-                        <p class="mt-3 text-lg font-medium leading-6">
-                        <h2 class="text-lg text-base-content lg:text-xl font-semibold">{{ $post->title }}</h2>
-                        </p>
-                        <p class="mt-2 text-md text-base-content">{!! $post->shortBody() !!}</p>
-                        </Link>
-                        <div class="mt-2 space-x-2">
-                            <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
-                                {{ $post->category->name }}
-                            </div>
-                            <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <h1 class="mt-10 mb-3 font-semibold text-2xl text-base-content flex justify-between">All blog posts <span
-                class="underline font-medium text-lg text-primary-focus"><a href="#">Load
-                    More</a></span></h1>
-        <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
-            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
-                @foreach ($posts as $key => $post)
-                    <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
-                        <img src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
-                            class="object-cover w-full h-48 sm:h-56" alt="" />
-                        <div class="pt-5">
-                            <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
-                                <span
-                                    class="text-base-content">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
-                            </p>
-                            <Link href="{{ route('post.show', $post->id) }}">
-                            <h2
-                                class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors
+        @if (request()->has('search'))
+            <h1 class="mt-10 mb-3 font-semibold text-2xl text-base-content flex justify-between">Search :
+                {{ $posts_count }} </h1>
+            <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
+                    @foreach ($posts as $key => $post)
+                        <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
+                            <img src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
+                                class="object-cover w-full h-48 sm:h-56" alt="" />
+                            <div class="pt-5">
+                                <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
+                                    <span
+                                        class="text-base-content">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
+                                </p>
+                                <Link href="{{ route('post.show', $post->id) }}">
+                                <h2
+                                    class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors
                         duration-200">
-                                {{ $post->title }}</h2>
-                            <p class="mb-2 text-base-content">
-                                {{ $post->shortBody() }}
+                                    {{ $post->title }}</h2>
+                                <p class="mb-2 text-base-content">
+                                    {{ $post->shortBody() }}
+                                </p>
+                                </Link>
+                                <div class="mt-4 space-x-2">
+                                    <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
+                                        {{ $post->category->name }}
+                                    </div>
+                                    <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            {{ $posts->links() }}
+        @else
+            <h1 class="mb-4 font-semibold text-2xl text-base-content flex justify-between">Recent blog posts <span
+                    class="underline font-medium text-lg text-primary-focus"><a href="#">Load
+                        More</a></span></h1>
+            <div class="lg:grid grid-cols-2 lg:gap-4 gap-3 lg:space-y-1 space-y-5">
+                @foreach ($recent_posts as $key => $post)
+                    <div class="sm:flex lg:items-end group">
+                        <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
+                            <img class="w-full rounded-md h-56 md:h-60 lg:h-48 lg:w-40 object-cover object-center"
+                                src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
+                                alt="default image">
+                        </div>
+                        <div>
+                            <span
+                                class="text-sm text-base-content font-medium">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
+                            <Link href="{{ route('post.show', $post->id) }}">
+                            <p class="mt-3 text-lg font-medium leading-6">
+                            <h2 class="text-lg text-base-content lg:text-xl font-semibold">{{ $post->title }}</h2>
                             </p>
+                            <p class="mt-2 text-md text-base-content">{!! $post->shortBody() !!}</p>
                             </Link>
-                            <div class="mt-4 space-x-2">
+                            <div class="mt-2 space-x-2">
                                 <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
                                     {{ $post->category->name }}
                                 </div>
@@ -84,8 +86,43 @@
                     </div>
                 @endforeach
             </div>
-        </div>
-        {{ $posts->links() }}
+
+            <h1 class="mt-10 mb-3 font-semibold text-2xl text-base-content flex justify-between">All blog posts <span
+                    class="underline font-medium text-lg text-primary-focus"><a href="#">Load
+                        More</a></span></h1>
+            <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
+                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
+                    @foreach ($posts as $key => $post)
+                        <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
+                            <img src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
+                                class="object-cover w-full h-48 sm:h-56" alt="" />
+                            <div class="pt-5">
+                                <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
+                                    <span
+                                        class="text-base-content">{{ $post->user->name . ' - ' . $post->created_at->diffForHumans() }}</span>
+                                </p>
+                                <Link href="{{ route('post.show', $post->id) }}">
+                                <h2
+                                    class="text-base-content inline-block mb-3 text-xl font-semibold transition-colors
+                        duration-200">
+                                    {{ $post->title }}</h2>
+                                <p class="mb-2 text-base-content">
+                                    {{ $post->shortBody() }}
+                                </p>
+                                </Link>
+                                <div class="mt-4 space-x-2">
+                                    <div class="badge badge-outline border-2 border-secondary-focus  text-base-content">
+                                        {{ $post->category->name }}
+                                    </div>
+                                    <div class="badge badge-outline border-2 text-base-content">#tutorial</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            {{ $posts->links() }}
+        @endif
     </div>
     <div class="mt-14 inset-x-0 top-0 h-2 bg-gradient-to-l from-pink-500 via-red-500 to-yellow-500"></div>
     <x-footer>

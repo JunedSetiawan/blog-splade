@@ -20,12 +20,13 @@
                 @if ($allNotifications->count() < 1)
                     There are no notifications.
                 @else
-                    <ul class="menu bg-base-200 w-full p-0 [&_li>*]:rounded-none">
+                    <ul class="menu w-full p-0 [&_li>*]:rounded-none">
                         @foreach ($allNotifications as $notification)
                             @php
                                 $notif = json_decode($notification->data);
                             @endphp
-                            <li class="{{ is_null($notification->read_at) ? 'text-red-700' : 'text-green-700' }} flex">
+                            <li
+                                class="{{ is_null($notification->read_at) ? 'text-red-700' : 'text-green-700' }} flex my-2 bg-base-200 rounded">
                                 Some User Reported This Post
                                 <Link href="{{ route('post.show', $notif->data->postId) }}">
                                 {{ $notif->data->postId }}

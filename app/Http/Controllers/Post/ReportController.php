@@ -19,20 +19,7 @@ class ReportController extends Controller
     {
         $reports = Reports::class;
 
-        $unreadNotifications = \Illuminate\Support\Facades\DB::table('notifications')
-            ->where('notifiable_id', auth()->id())
-            ->where('notifiable_type', get_class(auth()->user()))
-            ->whereNull('read_at')
-            ->get();
-
-        $readNotifications = \Illuminate\Support\Facades\DB::table('notifications')
-            ->where('notifiable_id', auth()->id())
-            ->where('notifiable_type', get_class(auth()->user()))
-            ->whereNotNull('read_at')
-            ->get();
         return view('pages.dashboard.report.index', [
-            'unreadNotifications' => $unreadNotifications,
-            'readNotifications' => $readNotifications,
             'reports' => $reports
         ]);
     }

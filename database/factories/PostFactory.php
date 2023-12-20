@@ -18,7 +18,7 @@ class PostFactory extends Factory
     {
         return [
             'user_id' => function () {
-                return \App\Models\User::factory()->create()->id;
+                return \App\Models\User::all()->random()->id;
             },
             'category_id' => function () {
                 return \App\Models\Category::all()->random()->id;

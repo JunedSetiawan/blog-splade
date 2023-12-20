@@ -72,6 +72,9 @@ Route::middleware('splade')->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('main');
 
+    // route for search
+    Route::get('/search', [HomeController::class, 'search'])->name('search');
+
     //route for post category
     Route::get('/post-category', [PostCategoryController::class, 'index'])->name('post.category');
     Route::get('/load-more-posts', [PostCategoryController::class, 'loadMore'])->name('loadMore');
