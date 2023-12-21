@@ -110,22 +110,18 @@
                     {!! $post->body !!}
                 </p>
                 <div>
-                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
-                        href="#">
-                        {{ $post->category->name }}
-                    </a>
-                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
-                        href="#">
-                        Web development
-                    </a>
-                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
-                        href="#">
-                        Free
-                    </a>
-                    <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
-                        href="#">
-                        Team
-                    </a>
+                    <Link
+                        class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-secondary text-base-100"
+                        href="{{ route('category.select', $post->category->slug) }}">
+                    {{ $post->category->name }}
+                    </Link>
+
+                    @foreach ($tags as $tag)
+                        <a class="m-1 inline-flex items-center gap-1.5 py-2 px-3 rounded-full text-sm bg-gray-100 text-gray-800 hover:bg-gray-200"
+                            href="#">
+                            <span># {{ $tag }}</span>
+                        </a>
+                    @endforeach
                 </div>
             </div>
 

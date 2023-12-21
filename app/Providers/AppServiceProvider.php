@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use ProtoneMedia\Splade\Components\Form\Select;
 use ProtoneMedia\Splade\Facades\SEO;
 
 class AppServiceProvider extends ServiceProvider

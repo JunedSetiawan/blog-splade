@@ -3,11 +3,9 @@
 @else
     <footer class="bg-base-100 mt-4">
         <div class="container flex flex-col items-center justify-between p-6 mx-auto space-y-4 sm:space-y-0 sm:flex-row">
-            <a href="#">
-                <img class="w-auto h-7" src="https://merakiui.com/images/full-logo.svg" alt="">
-            </a>
 
-            <p class="text-sm text-gray-600 dark:text-gray-300">© Copyright {{ \Carbon\Carbon::now()->format('Y') }}. by
+
+            <p class="text-sm text-gray-600 dark:text-gray-300">© Copyright {{ \Carbon\Carbon::now()->format('Y') }}.
                 {{ env('COPY_RIGHT') }} All Rights Reserved.</p>
 
             <div class="flex -mx-2">
@@ -33,7 +31,7 @@
                     </svg>
                 </a>
 
-                <a href="#"
+                <a href="https://github.com/JunedSetiawan" target="_blank"
                     class="mx-2 text-gray-600 transition-colors duration-300 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                     aria-label="Github">
                     <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none"

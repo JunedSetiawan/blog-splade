@@ -25,7 +25,7 @@
                 {{ $posts_count }} </h1>
             <div class="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl py-4">
                 <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 sm:mx-auto lg:max-w-full">
-                    @foreach ($posts as $key => $post)
+                    @forelse ($posts as $key => $post)
                         <div class="overflow-hidden transition-shadow duration-300 rounded shadow-sm">
                             <img src="{{ route('getImage', ['filename' => $post->image ?? 'default.jpg']) }}"
                                 class="object-cover w-full h-48 sm:h-56" alt="" />
@@ -51,7 +51,10 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <h1 class="text-center font-semibold text-2xl grid-cols-1">The post you are looking for doesn't
+                            exist..</h1>
+                    @endforelse
                 </div>
             </div>
             {{ $posts->links() }}

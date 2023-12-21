@@ -8,6 +8,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,9 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
+
+        $this->spladeTitle($post->title);
+
         $match_posts = Post::query()->with('category')->where('category_id', $post->category_id)->where('id', '!=', $post->id)->where('status', 'active')->limit(6)->get();
         if ($post->status === 'inactive') {
             Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
@@ -69,13 +73,14 @@ class PostController extends Controller
                 'post' => $post
             ]);
         }
+        $tags = $post->tags()->pluck('tags.name', 'tags.id')->toArray();
         $comments = $post->comments()->with('user')->orderBy('created_at', 'desc')->get();
-
 
         return view('pages.post.show', [
             'post' => $post,
             'match_posts' => $match_posts,
-            'comments' => $comments
+            'comments' => $comments,
+            'tags' => $tags
         ]);
     }
     public function personal_post()
@@ -92,10 +97,11 @@ class PostController extends Controller
     {
         $this->spladeTitle('Create Post');
         $categories = Category::query()->pluck('name', 'id')->toArray();
-        // dd($categories);
+        $tags = Tag::query()->pluck('name', 'id')->toArray();
 
         return view('pages.post.create', [
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags,
         ]);
     }
 
@@ -114,7 +120,11 @@ class PostController extends Controller
         $validated['image'] = $filename ?? null;
         $validated['user_id'] = auth()->user()->id;
 
-        Post::create($validated);
+        $post = Post::create($validated);
+
+        if ($request->has('tag_id')) {
+            $post->tags()->attach($request->tag_id);
+        }
 
         Toast::message('Created Post Successfully!')->autoDismiss(5);
 
