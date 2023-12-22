@@ -20,6 +20,9 @@
             <x-splade-select name="category_id" :options="$categories" label="Category Post"
                 placeholder="Select the category..." />
 
+            <x-splade-select name="tags[]" :options="$tags" label="Tags Post"
+                placeholder="Select the tags (can multiple)..." multiple relation choices />
+
             <x-splade-file filepond preview name="image" accept="image/png,image/jpg,image/jpeg"
                 label="Image post (if these error, don't worry this sistem absolutely WORK! can change image whatever)" />
 

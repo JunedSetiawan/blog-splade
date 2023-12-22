@@ -133,25 +133,34 @@ class PostController extends Controller
 
     public function edit($id)
     {
+        $this->spladeTitle('Edit Post');
+
         $post = Post::findOrFail($id);
+
         if ($post->status === 'inactive') {
             Toast::message('Your Post Has Been TakdeDown, Please Delete your post')->danger();
             abort(404);
         }
+
         $categories = Category::query()->pluck('name', 'id')->toArray();
-        $image = ExistingFile::fromDisk('public')->get('images/' . $post->image);
-        $this->spladeTitle('Edit Post');
+        $tags = Tag::query()->pluck('name', 'id')->toArray();
+
+        if ($post->image) {
+            $image = ExistingFile::fromDisk('public')->get('images/' . $post->image);
+        } else {
+            $image = null;
+        }
 
         return view('pages.post.edit', [
             'post' => $post,
             'categories' => $categories,
+            'tags' => $tags,
             'image' => $image
         ]);
     }
 
     public function update(StorePostRequest $request, $id)
     {
-
         $post = Post::findOrFail($id);
 
         if ($post->status === 'inactive') {
@@ -159,12 +168,13 @@ class PostController extends Controller
             abort(404);
         }
 
-        $this->authorize('edit', [$post, Post::class]);
+        $this->authorize('update', $post);
 
         // Update judul dan konten aktivitas
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->category_id = $request->category_id;
+        $post->tags()->sync($request->tags);
         $post->user_id = auth()->user()->id;
 
         // Jika ada file gambar baru yang diunggah
@@ -197,7 +207,7 @@ class PostController extends Controller
 
         $post->save();
 
-        Toast::message('Berhasil Mengubah Data Aktivitas')->autoDismiss(5);
+        Toast::message('Successfully updated the post')->autoDismiss(5);
 
         return redirect()->route('personal-post');
     }
